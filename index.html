@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bad Vibes Socials</title>
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <meta property="og:image" content="/img/profile.png" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/x-icon" href="./img/icon.png">
+  <link rel="stylesheet" href="style/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", ()=>{
+      VANTA.BIRDS({
+        el: "#vanta",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        wingSpan: 40.00,
+        speedLimit: 8.00,
+        separation: 100.00,
+        alignment: 43.00,
+        quantity: 2.00,
+        backgroundAlpha:0.0,
+      })
+      setTimeout(()=>{
+      document.querySelector('main').style.opacity='1';
+      document.querySelector('main').style.filter='none';
+      },1000)
+    })
+  </script>
+</head>
+
+<body>
+  <div id="vanta"></div>
+  <main>
+    <header>
+      <img src="./img/profile.png" alt="profile">
+    </header>
+    <div id="center">
+      <button class="btn">
+        <a target="_blank" href="https://www.facebook.com/itsbadvibes/">
+          Facebook
+        </a>
+      </button>
+      <button class="btn">
+        <a target="_blank" href="https://www.youtube.com/badvibesph">
+          YouTube
+        </a>
+      </button>
+      <button class="btn">
+        <a target="_blank" href="https://www.instagram.com/itsbadvibesph">
+          Instagram
+        </a>
+      </button>
+      <button class="btn">
+        <a target="_blank" href="https://twitter.com/itsbadvibesph">
+          Twitter
+        </a>
+      </button>
+      <button class="btn">
+        <a target="_blank" href="https://www.tiktok.com/@itsbadvibes">
+          Tiktok
+        </a>
+      </button>
+    </div>
+    <div id="rest"></div>
+  </main>
+</body>
+
+</html>

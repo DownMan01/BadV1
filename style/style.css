@@ -53,15 +53,15 @@ img{
   max-width: 350px;
   margin-top: 20px;
   border-radius: 25px;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.836);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: background-color 0.4s ease-in;
+  transition: background-color 0.5s ease-in;
 }
 .btn:hover{
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color:rgb(205, 255, 253);
 }
 .btn>a{
   display: flex;
@@ -72,9 +72,6 @@ img{
   text-decoration: none;
   color: #000;
   font-size: 16px;
-}
-svg{
-  margin-right: 10px;
 }
 #vanta{
   z-index: 0;

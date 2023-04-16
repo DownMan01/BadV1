@@ -27,10 +27,7 @@
   border-bottom: 3px solid #222;
 }
 .container .heading h3 a{
-  font-size: 3em;
-  font-weight: bolder;
-  padding-bottom: 10px;
-  border-bottom: 3px solid #222;
+  color: #000;
 }
 
 .container .heading h3 span{

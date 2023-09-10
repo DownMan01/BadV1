@@ -1,12 +1,18 @@
+/* Reset some default styles */
 body {
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    height: 100vh; /* Set the height of the body to the viewport height */
 }
-a {
-    height: 200px;
-    width: 200px;
-    margin: 0 auto;
+
+/* Style for the button container */
+.button-container {
+    text-align: center; /* Center-align the content inside the container */
 }
+
 /* Style for the download button */
 .download-button {
     display: inline-block;

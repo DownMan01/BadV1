@@ -13,6 +13,15 @@ body {
 #rest{
   flex: 1;
 }
+#vanta{
+  z-index: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100vh;     
+}
+
 /* Style for the button container */
 .button-container {
     text-align: center; /* Center-align the content inside the container */
@@ -35,12 +44,4 @@ body {
 
 .download-button:hover {
     background-color: #0056b3; /* Change the color on hover */
-}
-#vanta{
-  z-index: 0;
-  position: absolute;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100vh;     
 }

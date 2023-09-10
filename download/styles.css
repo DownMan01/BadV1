@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
+    background: linear-gradient(rgba(141, 141, 141, 0.1)20%, rgba(0, 0, 0, 0.1)),url(../img/bg.jpg);
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
     height: 100vh; /* Set the height of the body to the viewport height */

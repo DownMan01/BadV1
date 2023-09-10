@@ -10,7 +10,9 @@ body {
     align-items: center; /* Center content vertically */
     height: 100vh; /* Set the height of the body to the viewport height */
 }
-
+#rest{
+  flex: 1;
+}
 /* Style for the button container */
 .button-container {
     text-align: center; /* Center-align the content inside the container */

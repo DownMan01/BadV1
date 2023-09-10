@@ -2,7 +2,11 @@ body {
     margin: 0;
     padding: 0;
 }
-
+.a {
+    height: 200px;
+    width: 200px;
+    margin: 0 auto;
+}
 /* Style for the download button */
 .download-button {
     display: inline-block;
@@ -16,9 +20,6 @@ body {
     border-radius: 5px; /* Rounded corners */
     cursor: pointer;
     transition: background-color 0.3s ease;
-    height: 200px;
-    width: 200px;
-    margin: 0 auto;
 }
 
 .download-button:hover {

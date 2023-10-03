@@ -1,0 +1,72 @@
+
+package samorocons;
+
+
+public class SamoroCons {
+
+    String MyName, PresentAddress, PermanentAddress, CivilStatus, Citizenship, PlaceofBirth, Religion;
+    String F_name, M_name, P_Address, LoDS, CoE, Ele_School, High_School, College, Course, Special_Skills, DateofBirth;
+    
+    int Age, Weight, Height, YG1, YG2;
+    String  YG3;
+    
+    
+    public SamoroCons(String name,String PA, String PA1, String DoB, String CS, String C, String PoB, int edad, int bigat, int tangkad, String R, String m_name, String f_name, String p_address,
+            String lods, String coe, String Eschool, String Hschool, String college, String course, String skill, int yg1, int yg2, String yg3){
+        MyName = name;
+        PresentAddress = PA;
+        PermanentAddress = PA1;
+        DateofBirth = DoB;
+        CivilStatus = CS;
+        Citizenship = C;
+        PlaceofBirth = PoB;
+        Religion = R;
+        
+        Age = edad;
+        Weight = bigat;
+        Height = tangkad;
+        
+        M_name = m_name;
+        F_name = f_name;
+        P_Address = p_address;
+        LoDS = lods;
+        CoE = coe;
+        
+        Ele_School = Eschool;
+        High_School = Hschool;
+        College = college;
+        Course = course;
+        Special_Skills = skill;
+        
+        YG1 = yg1;
+        YG2 = yg2;
+        YG3 = yg3;
+        
+    }
+    public static void main(String[] args) {
+        SamoroCons BioData = new SamoroCons("Julie", "Dapaon", "Sindangan", "04/04/2001" , "Single", "Filipino", "Sindangan", 21, 49, 250, "Catholic", "Julieta", "Arturo", "Dapaon", "Bisaya", "Renan",
+                "Sindangan Pilot", "Sindangan National", "SJCSI", "BSIT", "Matulog", 2012, 2019, "Soon");
+        System.out.println("Name:" + BioData.MyName);
+        System.out.println("Present Address: " + BioData.PresentAddress);
+        System.out.println("Permanent Address: " + BioData.PermanentAddress);
+        System.out.println("Date of Birth: " + BioData.DateofBirth + "                      " + "Religion: " + BioData.Religion);
+        System.out.println("Civil Status: " + BioData.CivilStatus + "                           " + "Age: " + BioData.Age);
+        System.out.println("Citizenship: " + BioData.Citizenship + "                          " + "Weight: " + BioData.Weight);
+        System.out.println("Place of Birth: " + BioData.PlaceofBirth  + "                      " + "Height: " + BioData.Height); 
+        
+        System.out.println("Name of Father: " + BioData.M_name);
+        System.out.println("Name of Mother: " + BioData.F_name);
+        System.out.println("Address: " + BioData.P_Address);
+        System.out.println("Language or Dialects Spoken: " + BioData.LoDS);
+        System.out.println("Person to be notified In Case of Emergency: " + BioData.CoE);
+        System.out.println(" ");
+        System.out.println("EDUCATIONAL BACKGROUND:"); 
+        System.out.println("Elementary: " + BioData.Ele_School + "             " + "Year Graduated: " + BioData.YG1);
+        System.out.println("High School: " + BioData.High_School + "         " + "Year Graduated: " + BioData.YG2);
+        System.out.println("College: " + BioData.College + "                          " + "Year Graduated: " + BioData.YG3);
+        System.out.println("Course: " + BioData.Course);
+        System.out.println("Special Skill: " + BioData.Special_Skills);
+        
+       
+    }   
+}

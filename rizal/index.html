@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="../img/icon.png">
+    <title>Bad Vibes App</title>
+
+     <script>
+    window.addEventListener("DOMContentLoaded", ()=>{
+      VANTA.BIRDS({
+        el: "#vanta",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        wingSpan: 40.00,
+        speedLimit: 8.00,
+        separation: 100.00,
+        alignment: 43.00,
+        quantity: 2.00,
+        backgroundAlpha:0.0,
+      })
+      setTimeout(()=>{
+      document.querySelector('main').style.opacity='1';
+      document.querySelector('main').style.filter='none';
+      },1000)
+    })
+  </script>
+    
+</head>
+<body>
+    <div class="button-container">
+        <a href="https://raw.githubusercontent.com/DownMan01/BadV1/main/Bad%20Vibes.apk" class="download-button">Download Now</a>
+    </div>
+</body>
+</html>

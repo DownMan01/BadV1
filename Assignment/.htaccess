@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Password Protected Area"
+AuthUserFile BadV1/Assignment/.htpassword
+Require valid-user

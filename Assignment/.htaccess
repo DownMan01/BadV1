@@ -1,4 +1,4 @@
 AuthType Basic
 AuthName "Password Protected Area"
-AuthUserFile /blob/main/Assignment/.htpassword
+AuthUserFile /main/Assignment/.htpassword
 Require valid-user

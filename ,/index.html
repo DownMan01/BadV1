@@ -1,0 +1,263 @@
+<!--
+<HEAD>
+  <SCRIPT language="JavaScript">
+  
+  var password;
+  var username;
+  
+  var user="secret";
+  var pass="lang";
+  
+  username=prompt('Username:', '');
+  password=prompt('Password:','');
+  
+  
+    if (username==user && password==pass)
+      alert('WELCOME TO THE UNIVERSE');
+    else
+       {
+          window.location="https://calculator-ayayay.netlify.app/";
+           }
+  
+  </SCRIPT>
+  </HEAD>
+-->
+
+
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Unknown</title>
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="text-boxes">
+      <div class="text-box HTMLBox">
+        <div class="topic">book:</div>
+        <textarea id="HTMLBox" readonly>
+package book;
+
+public class Book {
+     Private String title;
+     Private String author;
+     Private int publicationYear;
+     Private String ISBN;
+     Private int numberOfPages;
+
+// Default constructor
+public Book() {
+     title = "Unknown";
+     author = "Anonymous";
+     publicationYear = 0;
+     ISBN = "N/A";
+     numberOfPages = 0;
+}
+
+// Parameterized constructor
+public Book(String title, String author, int publicationYear, String ISBN, int numberOfPages) {
+      this.title = title;
+      this.author = author;
+      this.publicationYear = publicationYear;
+      this.ISBN = ISBN;
+      this.numberOfPages = numberOfPages;
+}
+
+// Method to display book information
+public void displayInfo() {
+      System.out.println("Title: " + title);
+      System.out.println("Author: " + author);
+      System.out.println("Publication Year: " + publicationYear);
+      System.out.println("ISBN: " + ISBN);
+      System.out.println("Number of Pages: " + numberOfPages);
+}
+
+public static void main(String[] args) {
+    // Create a book using the default constructor
+      Book defaultBook = new Book();
+      System.out.println("The default constructor:");
+      defaultBook.displayInfo();
+        
+      System.out.println();
+
+    // Create a book using the parameterized constructor
+      Book parameterizedBook = new Book("Unknown", "Anonymous", 0, "N/A", 0);
+      System.out.println("The parameterized constructor:");
+      parameterizedBook.displayInfo();
+  }
+}
+
+      </textarea
+        >
+        <button id="HTMLButton">Copy Codes</button>
+      </div>
+
+      <div class="text-box CSSBox">
+        <div class="topic">car:</div>
+        <textarea id="CSSBox" readonly>
+package car;
+
+public class Car {
+      Private String make;
+      Private String model;
+      Private int year;
+
+// Constructor
+public Car(String make, String model, int year) {
+      this.make = make;
+      this.model = model;
+      this.year = year;
+}
+
+// Method getMake
+public String getMake() {
+      return make;
+}
+
+// Method getModel
+public String getModel() {
+      return model;
+}
+
+// Method getYear
+public int getYear() {
+      return year;
+}
+
+public void displayDetails() {
+      System.out.println("This car is a " + year + " " + make + " " + model + ".");
+}
+
+public static void main(String[] args) {
+      Car myCar = new Car("Toyota", "Camry", 2022);
+      myCar.displayDetails();
+  }
+}
+
+      </textarea
+        >
+        <button id="CSSButton">Copy Codes</button>
+      </div>
+
+      <div class="text-box JSBox">
+        <div class="topic">person:</div>
+        <textarea id="JSBox" readonly>
+package person;
+
+public class Person {
+      Private String name, gender;
+      Private int age;
+          
+public Person() {
+      name = "Unknown";
+      age = 0;
+      gender = "Unspecified";
+              }
+          
+public Person(String name, int age, String gender) {
+      this.name = name;
+      this.age = age;
+      this.gender = gender;
+}
+          
+public void introduce() {
+    System.out.println("Hello, my name is " + name + ", I am " + age + " years old, and I am " + gender + ".");
+}
+          
+public static void main(String[] args) {
+      Person person1 = new Person();
+      System.out.println("First instance:");
+      person1.introduce();
+          
+      System.out.println("");
+                  
+      Person person2 = new Person("Unknown", 0, "Unspecified");
+      System.out.println("Second instance:");
+      person2.introduce();
+  }
+}
+          
+      </textarea
+        >
+        <button id="JSButton">Copy Codes</button>
+      </div>
+
+      <div class="text-box SBox">
+        <div class="topic">student:</div>
+        <textarea id="SBox" readonly>
+package student;
+
+public class Student {
+      Private String name;
+      Private int age;
+      Private char grade;
+
+public Student(String name, int age, char grade) {
+      this.name = name;
+      this.age = age;
+      this.grade = grade;
+}
+
+public void displayStudentInfo() {
+      System.out.println("Name: " + name);
+      System.out.println("Age: " + age);
+      System.out.println("Grade: " + grade);
+}
+
+public static void main(String[] args) {
+      Student alice = new Student("Alice", 18, 'A');
+      alice.displayStudentInfo();
+  }
+
+}
+      </textarea
+        >
+        <button id="SButton">Copy Codes</button>
+      </div>
+
+
+    </div>
+
+    <script>
+      // HTML BOx JS Code
+      let HTMLBox = document.getElementById("HTMLBox");
+      let HTMLButton = document.getElementById("HTMLButton");
+
+      HTMLButton.onclick = function () {
+        HTMLBox.select();
+        document.execCommand("copy");
+        HTMLButton.innerText = "Codes Copied";
+      };
+
+      // CSS Box Js Code
+      let CSSBox = document.getElementById("CSSBox");
+      let CSSButton = document.getElementById("CSSButton");
+
+      CSSButton.onclick = function () {
+        CSSBox.select();
+        document.execCommand("copy");
+        CSSButton.innerText = "Codes Copied";
+      };
+      // JavaScript BOx JS Code
+      let JSBox = document.getElementById("JSBox");
+      let JSButton = document.getElementById("JSButton");
+
+      JSButton.onclick = function () {
+        JSBox.select();
+        document.execCommand("copy");
+        JSButton.innerText = "Codes Copied";
+      };
+      // JavaScript BOx S Code
+      let SBox = document.getElementById("SBox");
+      let SButton = document.getElementById("SButton");
+
+      SButton.onclick = function () {
+        SBox.select();
+        document.execCommand("copy");
+        SButton.innerText = "Codes Copied";
+      };
+    </script>
+  </body>
+</html>

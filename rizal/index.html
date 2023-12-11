@@ -1,45 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <link rel="icon" type="image/x-icon" href="../img/icon.png">
-    <title>Life of Rizal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
 
-     <script>
-    window.addEventListener("DOMContentLoaded", ()=>{
-      VANTA.BIRDS({
-        el: "#vanta",
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        scale: 1.00,
-        scaleMobile: 1.00,
-        wingSpan: 40.00,
-        speedLimit: 8.00,
-        separation: 100.00,
-        alignment: 43.00,
-        quantity: 2.00,
-        backgroundAlpha:0.0,
-      })
-      setTimeout(()=>{
-      document.querySelector('main').style.opacity='1';
-      document.querySelector('main').style.filter='none';
-      },1000)
-    })
-  </script>
-    
+        #video-container {
+            max-width: 800px;
+            margin: 50px auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+    <title>Video Player</title>
 </head>
 <body>
-   <div class="button-container">
-    <a href="https://raw.githubusercontent.com/DownMan01/BadV1/main/download/Rizal%20Life%201.pptx" class="download-button">Life of Rizal 1</a>
-    <a href="https://raw.githubusercontent.com/DownMan01/BadV1/main/download/Rizal%20Life%202.pptx" class="download-button">Life of Rizal 2</a>
-    <a href="https://raw.githubusercontent.com/DownMan01/BadV1/main/download/Rizal%20Life%203.pptx" class="download-button">Life of Rizal 3</a>
-  </div>
+
+<div id="video-container">
+    <video controls>
+        <source src="r1s.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
 </body>
 </html>

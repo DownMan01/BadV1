@@ -20,20 +20,17 @@
             overflow: hidden;
         }
 
-        video {
+        iframe {
             width: 100%;
-            height: auto;
+            height: 400px; /* You can adjust the height as needed */
         }
     </style>
-    <title>Video Player</title>
+    <title>YouTube Video Player</title>
 </head>
 <body>
 
 <div id="video-container">
-    <video controls>
-        <source src="r1s.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <iframe width="560" height="315" src="https://www.youtube.com/watch?v=VbcKxPTzOe0" frameborder="0" allowfullscreen></iframe>
 </div>
 
 </body>

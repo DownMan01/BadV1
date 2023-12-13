@@ -26,25 +26,43 @@ password=prompt('Password:','');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Use Case Diagram</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
+        #zoom-container {
+            overflow: hidden;
+            width: 50%; /* You can adjust the width as needed */
+            margin: auto;
         }
 
-        img {
-            max-width: 100%;
-            max-height: 100%;
+        #zoom-image {
+            width: 100%;
+            height: auto;
+            transition: transform 0.5s ease;
+        }
+
+        #zoom-image:hover {
+            transform: scale(1.5); /* Adjust the scale factor for zooming in */
         }
     </style>
 </head>
 <body>
-    <img src="https://raw.githubusercontent.com/DownMan01/BadV1/main/Assignment/usecase.png" alt="Large Photo">
+
+<div id="zoom-container">
+    <img id="zoom-image" src="https://raw.githubusercontent.com/DownMan01/BadV1/main/Assignment/usecase.png" alt="Zoomable Image">
+</div>
+
+<script>
+    // Optional: Add JavaScript for zooming with a button
+    let scale = 1;
+
+    document.getElementById('zoom-image').addEventListener('wheel', (event) => {
+        event.preventDefault();
+
+        scale += event.deltaY * -0.01;
+        scale = Math.min(Math.max(0.5, scale), 2); // Adjust the min and max scale as needed
+
+        document.getElementById('zoom-image').style.transform = `scale(${scale})`;
+    });
+</script>
+
 </body>
 </html>

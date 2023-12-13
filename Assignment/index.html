@@ -29,18 +29,22 @@ password=prompt('Password:','');
     <style>
         #zoom-container {
             overflow: hidden;
-            width: 50%; /* You can adjust the width as needed */
+            width: 80%; /* Adjust the width as needed */
             margin: auto;
+            position: relative;
         }
 
         #zoom-image {
             width: 100%;
             height: auto;
+            transform-origin: 0 0;
             transition: transform 0.5s ease;
+            cursor: grab;
+            user-select: none;
         }
 
-        #zoom-image:hover {
-            transform: scale(1.5); /* Adjust the scale factor for zooming in */
+        #zoom-image:active {
+            cursor: grabbing;
         }
     </style>
 </head>
@@ -51,16 +55,50 @@ password=prompt('Password:','');
 </div>
 
 <script>
-    // Optional: Add JavaScript for zooming with a button
     let scale = 1;
+    let offsetX = 0;
+    let offsetY = 0;
+    let dragging = false;
 
-    document.getElementById('zoom-image').addEventListener('wheel', (event) => {
+    const zoomImage = document.getElementById('zoom-image');
+
+    zoomImage.addEventListener('mousedown', (event) => {
+        event.preventDefault();
+        dragging = true;
+        offsetX = event.clientX - zoomImage.getBoundingClientRect().left;
+        offsetY = event.clientY - zoomImage.getBoundingClientRect().top;
+    });
+
+    document.addEventListener('mousemove', (event) => {
+        if (dragging) {
+            const x = event.clientX - offsetX;
+            const y = event.clientY - offsetY;
+
+            zoomImage.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        dragging = false;
+    });
+
+    zoomImage.addEventListener('wheel', (event) => {
         event.preventDefault();
 
-        scale += event.deltaY * -0.01;
-        scale = Math.min(Math.max(0.5, scale), 2); // Adjust the min and max scale as needed
+        const zoomFactor = 0.1; // Adjust the zoom factor as needed
 
-        document.getElementById('zoom-image').style.transform = `scale(${scale})`;
+        if (event.deltaY < 0) {
+            scale += zoomFactor;
+        } else {
+            scale -= zoomFactor;
+        }
+
+        scale = Math.min(Math.max(0.5, scale), 3); // Adjust the min and max scale as needed
+
+        const x = event.clientX - offsetX;
+        const y = event.clientY - offsetY;
+
+        zoomImage.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
     });
 </script>
 

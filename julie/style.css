@@ -123,15 +123,15 @@ body {
   height: 0;
 }
 
-/* Add the shadow */
 .shadow {
-  position: center;
+  position: absolute;
   width: 330px;
   height: 25px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.3);
   bottom: 250px;
-  left: 650px;
+  left: 50%; /* Set left to 50% */
+  transform: translateX(-50%); /* Translate it back by half its width */
   animation: scale 3s linear infinite;
   z-index: -1;
 }

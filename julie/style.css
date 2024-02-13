@@ -134,6 +134,8 @@ body {
   bottom: 250px;
   left: 50%; /* Set left to 50% */
   transform: translateX(-50%); /* Translate it back by half its width */
+  margin-right: auto; /* Centering horizontally */
+  margin-left: auto; /* Centering horizontally */
   animation: scale 3s linear infinite;
   z-index: -1;
 }

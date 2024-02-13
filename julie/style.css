@@ -125,7 +125,7 @@ body {
 
 /* Add the shadow */
 .shadow {
-  position: absolute;
+  position: center;
   width: 330px;
   height: 25px;
   border-radius: 50%;

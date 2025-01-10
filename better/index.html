@@ -635,13 +635,13 @@ filter: none;
 </script>
 <h1 class="-is-visually-hidden">Brat Generator</h1>
 <div id="memeContainer">
-    <img id="memeImage" src="/sites/g/files/g2000017981/files/2024-02/album-art.png" alt="Meme Image">
+    <img id="memeImage" src="/css/album-art.png" alt="Meme Image">
     <div id="memeText"></div>
     <div id="textOverlay"></div>
 </div>
 <input type="text" id="textInput" value="SWEAT"
     maxlength="20">
-<div id="screenshot-blurb">Take a Screenshot to Save!</div>
+<div id="screenshot-blurb">TAKE A SCREENSHOT TO SAVE!</div>
 <!-- <button id="saveBtn">Save</button> -->
 
 <div class="footerWrapper">
@@ -651,14 +651,14 @@ filter: none;
             <a class="ot-sdk-show-settings" style="cursor: pointer">Do Not Sell or Share My Personal Information</a>
         </div>
         <div class="privacyLinks">
-            <a href="https://privacy.wmg.com/atlantic/privacy-policy" class="pp" target="_blank">Privacy Policy</a>
+            <a href="https://privacy.wmg.com/atlantic/privacy-policy" class="pp" target="_blank"></a>
         </div>
         <div class="touLink">
-            <a href="https://www.atlanticrecords.com/terms-of-use" class="tou" target="_blank">Terms of Use</a>
+            <a href="https://www.atlanticrecords.com/terms-of-use" class="tou" target="_blank"></a>
         </div>
         <div class="cookiePolicyLink">
             <a href="https://www.wminewmedia.com/cookies-policy/" class="cookiePolicy"
-                target="_blank">Cookies&nbsp;Policy</a>
+                target="_blank">&nbsp;</a>
         </div>
     </div>
     <div class="socialWrapper active">
@@ -1087,7 +1087,7 @@ memeImage.style.display = "none";
             body.classList.remove("blue");
             body.classList.add("green");          
             textInput.setAttribute("maxlength", "20");
-            memeImage.src = "/sites/g/files/g2000017981/files/2024-02/album-art.png";
+            memeImage.src = "/css/album-art.png";
    
        
            textInput.value= "brat";
@@ -1119,7 +1119,7 @@ memeImage.style.display = "none";
             body.classList.add("white");          
             textInput.removeAttribute("maxlength");
         
-            memeImage.src = "/sites/g/files/g2000017981/files/2024-06/WhitePNGImage.png";
+            memeImage.src = "/css/WhitePNGImage.png";
           
             textInput.value= "brat and it’s completely different but also still brat";
          textFit(textOverlay,{maxFontSize:70});
@@ -1134,7 +1134,7 @@ memeImage.style.display = "block";
             body.classList.remove("green");
             body.classList.add("blue");          
             textInput.setAttribute("maxlength", "20");           
-            memeImage.src = "/sites/g/files/g2000017981/files/2024-09/sweat-art.png";
+            memeImage.src = "/css/sweat-art.png";
 
             if(currentIPValue =="brat and it’s completely different but also still brat" ||currentIPValue =="SWEAT" ){
                // textInput.value= "SWEAT";

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Bad Vibes Socials</title>
-  <meta name="theme-color" content="#0a0a0a">
+  <meta name="theme-color" content="#050505">
 
   <meta property="og:image" content="./img/profile.png">
   <link rel="icon" type="image/x-icon" href="./img/icon.png">
@@ -16,16 +16,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 
   <style>
-    /* --- Modern Reset & Variables --- */
+    /* --- CSS Reset --- */
     :root {
       --bg: #050505;
-      --card-bg: #111111;
-      --card-border: rgba(255, 255, 255, 0.08);
-      --item-bg: #1a1a1a;
-      --item-hover: #252525;
-      --text-main: #ffffff;
-      --text-sub: #888888;
-      --accent: #3b82f6; /* Verification Blue */
+      --card-bg: rgba(20, 20, 20, 0.8);
+      --item-bg: rgba(255, 255, 255, 0.05);
+      --item-hover: rgba(255, 255, 255, 0.1);
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #3b82f6;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -33,186 +31,154 @@
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--bg);
-      color: var(--text-main);
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      color: #fff;
+      /* Grid is better for perfect centering + scrolling safety */
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
       position: relative;
     }
 
-    /* --- Background Canvas --- */
+    /* --- Background Game Canvas --- */
     canvas#game-canvas {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: 0;
+      pointer-events: auto; /* Allows clicking canvas */
     }
 
-    /* --- Main Layout --- */
+    /* --- Main Container --- */
     main {
       position: relative;
       z-index: 10;
       width: 100%;
-      height: 100%;
-      overflow-y: auto; /* Allow scrolling on small screens */
-      padding: 2rem 1rem;
+      /* Ensures padding on mobile */
+      padding: 2rem 1rem; 
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      justify-content: center;
     }
 
-    /* --- The Modern Card --- */
+    /* --- The Card --- */
     .profile-card {
       width: 100%;
-      max-width: 420px;
-      /* Solid semi-transparent dark base for contrast against game */
-      background: rgba(15, 15, 15, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 6px; /* Inner padding for the "framed" look */
-      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7);
+      max-width: 400px; /* Strict width control */
+      background: var(--card-bg);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 8px; /* Inner gap frame */
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
       
       opacity: 0;
-      animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    @keyframes popIn {
-      from { opacity: 0; transform: scale(0.95) translateY(20px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* --- Header Section --- */
-    .card-header {
-      background: var(--item-bg);
+    .card-inner {
+      background: #111;
       border-radius: 20px;
-      padding: 2rem 1.5rem;
+      padding: 2rem;
       text-align: center;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       position: relative;
       overflow: hidden;
     }
 
-    /* Subtle glow behind profile */
-    .card-header::before {
-        content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
-        pointer-events: none;
+    /* Noise Texture Overlay */
+    .card-inner::after {
+        content: ""; position: absolute; inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        opacity: 0.4; pointer-events: none;
     }
 
     .profile-img {
-      width: 96px; height: 96px;
+      width: 100px; height: 100px;
       border-radius: 50%;
-      border: 3px solid #2a2a2a;
+      border: 3px solid #1a1a1a;
+      box-shadow: 0 0 20px rgba(255,255,255,0.05);
       object-fit: cover;
       margin-bottom: 1rem;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      position: relative; z-index: 2;
     }
 
-    .identity-row {
+    .name-row {
         display: flex; align-items: center; justify-content: center; gap: 6px;
-        margin-bottom: 4px;
+        position: relative; z-index: 2;
     }
 
-    h1 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .verified-icon {
-        color: var(--accent);
-        font-size: 1rem;
-    }
-
+    h1 { font-size: 1.4rem; font-weight: 700; color: #fff; }
+    .verified { color: var(--accent); font-size: 1rem; }
+    
     .bio {
-      font-size: 0.9rem;
-      color: var(--text-sub);
-      font-weight: 500;
+      color: #888; font-size: 0.9rem; font-weight: 500; margin-top: 4px;
+      position: relative; z-index: 2;
     }
 
-    /* --- Links Section --- */
-    .links-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    /* --- Links Grid --- */
+    .links-stack {
+      display: flex; flex-direction: column; gap: 8px;
     }
 
-    .link-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
+    .link-btn {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
       background: var(--item-bg);
-      border-radius: 18px;
+      border-radius: 16px;
       text-decoration: none;
       color: #fff;
       transition: all 0.2s ease;
       border: 1px solid transparent;
-      group: hover;
     }
 
-    /* Left side: Icon box + Text */
-    .link-left {
-        display: flex; align-items: center; gap: 16px;
-    }
-
-    .icon-box {
-        width: 40px; height: 40px;
+    .left-content { display: flex; align-items: center; gap: 14px; }
+    
+    .icon {
+        width: 36px; height: 36px;
+        background: rgba(255,255,255,0.08);
         border-radius: 10px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.2rem;
-        background: #222;
-        color: #fff;
-        transition: transform 0.2s ease;
+        font-size: 1.1rem;
+        transition: 0.2s;
     }
 
-    .link-text {
-        font-weight: 600;
-        font-size: 0.95rem;
-    }
+    .label { font-weight: 600; font-size: 0.95rem; }
+    .arrow { color: #555; font-size: 0.8rem; transition: 0.2s; }
 
-    /* Right side: Arrow */
-    .link-arrow {
-        color: #444;
-        transition: color 0.2s, transform 0.2s;
-    }
-
-    /* Hover States */
-    .link-item:hover {
+    /* Hover Effects */
+    .link-btn:hover {
         background: var(--item-hover);
-        transform: translateY(-2px);
-        border-color: rgba(255,255,255,0.05);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        transform: scale(1.02);
+        border-color: rgba(255,255,255,0.1);
     }
-    .link-item:hover .link-arrow {
-        color: #fff;
-        transform: translateX(4px);
-    }
+    .link-btn:hover .arrow { color: #fff; transform: translateX(3px); }
+    
+    /* Brand Colors (Icon fills on hover) */
+    .link-btn:hover .icon.fb { background: #1877F2; }
+    .link-btn:hover .icon.yt { background: #FF0000; }
+    .link-btn:hover .icon.ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .link-btn:hover .icon.tw { background: #fff; color: #000; }
+    .link-btn:hover .icon.tt { background: #00f2ea; color: #000; }
 
-    /* Brand Specific Colors on Hover */
-    .link-item:hover .icon-box.fb-icon { background: #1877F2; }
-    .link-item:hover .icon-box.yt-icon { background: #FF0000; }
-    .link-item:hover .icon-box.ig-icon { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-    .link-item:hover .icon-box.tw-icon { background: #fff; color: #000; }
-    .link-item:hover .icon-box.tt-icon { background: #00f2ea; color: #000; }
-
-    /* --- Footer / Score --- */
-    .footer-bar {
-        margin-top: 1rem;
-        padding: 0.8rem 1.5rem;
-        background: rgba(0,0,0,0.5);
-        backdrop-filter: blur(10px);
+    /* --- Floating Badge --- */
+    .interactive-badge {
+        position: fixed; bottom: 20px;
+        background: rgba(10,10,10,0.8);
+        border: 1px solid #333;
+        padding: 8px 16px;
         border-radius: 50px;
-        border: 1px solid rgba(255,255,255,0.1);
-        display: flex;
-        gap: 15px;
-        align-items: center;
+        font-size: 0.8rem; color: #888;
+        display: flex; align-items: center; gap: 8px;
+        backdrop-filter: blur(5px);
+        z-index: 5;
     }
-    .score-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e;}
-    .score-text { font-size: 0.85rem; color: #ccc; font-weight: 600; }
+    .key { background: #333; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;}
 
   </style>
 </head>
@@ -223,182 +189,233 @@
   <main>
     <div class="profile-card" data-tilt data-tilt-max="2" data-tilt-speed="400">
       
-      <div class="card-header">
+      <div class="card-inner">
         <img src="./img/profile.png" alt="Profile" class="profile-img">
-        <div class="identity-row">
+        <div class="name-row">
             <h1>Bad Vibes</h1>
-            <i class="fa-solid fa-circle-check verified-icon" title="Verified Creator"></i>
+            <i class="fa-solid fa-circle-check verified"></i>
         </div>
-        <p class="bio">Digital Creator • Gaming • Lifestyle</p>
+        <p class="bio">Digital Creator • Social Hub</p>
       </div>
 
-      <div class="links-wrapper">
-        
-        <a href="https://www.facebook.com/badvibeph/" target="_blank" class="link-item">
-            <div class="link-left">
-                <div class="icon-box fb-icon"><i class="fa-brands fa-facebook-f"></i></div>
-                <span class="link-text">Facebook</span>
-            </div>
-            <i class="fa-solid fa-chevron-right link-arrow"></i>
+      <div class="links-stack">
+        <a href="https://www.facebook.com/badvibeph/" target="_blank" class="link-btn">
+          <div class="left-content">
+            <div class="icon fb"><i class="fa-brands fa-facebook-f"></i></div>
+            <span class="label">Facebook</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow"></i>
         </a>
 
-        <a href="https://www.youtube.com/badvibesph/" target="_blank" class="link-item">
-            <div class="link-left">
-                <div class="icon-box yt-icon"><i class="fa-brands fa-youtube"></i></div>
-                <span class="link-text">YouTube</span>
-            </div>
-            <i class="fa-solid fa-chevron-right link-arrow"></i>
+        <a href="https://www.youtube.com/badvibesph/" target="_blank" class="link-btn">
+          <div class="left-content">
+            <div class="icon yt"><i class="fa-brands fa-youtube"></i></div>
+            <span class="label">YouTube</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow"></i>
         </a>
 
-        <a href="https://www.instagram.com/badvibesph/" target="_blank" class="link-item">
-            <div class="link-left">
-                <div class="icon-box ig-icon"><i class="fa-brands fa-instagram"></i></div>
-                <span class="link-text">Instagram</span>
-            </div>
-            <i class="fa-solid fa-chevron-right link-arrow"></i>
+        <a href="https://www.instagram.com/badvibesph/" target="_blank" class="link-btn">
+          <div class="left-content">
+            <div class="icon ig"><i class="fa-brands fa-instagram"></i></div>
+            <span class="label">Instagram</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow"></i>
         </a>
 
-        <a href="https://twitter.com/itsbadvibesph/" target="_blank" class="link-item">
-            <div class="link-left">
-                <div class="icon-box tw-icon"><i class="fa-brands fa-x-twitter"></i></div>
-                <span class="link-text">Twitter / X</span>
-            </div>
-            <i class="fa-solid fa-chevron-right link-arrow"></i>
+        <a href="https://twitter.com/itsbadvibesph/" target="_blank" class="link-btn">
+          <div class="left-content">
+            <div class="icon tw"><i class="fa-brands fa-x-twitter"></i></div>
+            <span class="label">Twitter / X</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow"></i>
         </a>
 
-        <a href="https://www.tiktok.com/@itsbadvibes/" target="_blank" class="link-item">
-            <div class="link-left">
-                <div class="icon-box tt-icon"><i class="fa-brands fa-tiktok"></i></div>
-                <span class="link-text">TikTok</span>
-            </div>
-            <i class="fa-solid fa-chevron-right link-arrow"></i>
+        <a href="https://www.tiktok.com/@itsbadvibes/" target="_blank" class="link-btn">
+          <div class="left-content">
+            <div class="icon tt"><i class="fa-brands fa-tiktok"></i></div>
+            <span class="label">TikTok</span>
+          </div>
+          <i class="fa-solid fa-chevron-right arrow"></i>
         </a>
-
       </div>
-    </div>
 
-    <div class="footer-bar">
-        <div class="score-dot"></div>
-        <div class="score-text">Snake Energy: <span id="score">0</span></div>
     </div>
-
   </main>
 
+  <div class="interactive-badge">
+    <span class="key">CLICK BG</span>
+    <span>to scare snakes</span>
+  </div>
+
   <script>
-    // --- 1. Tilt Effect (Subtle) ---
+    // --- 1. Tilt Initialization ---
     VanillaTilt.init(document.querySelector(".profile-card"));
 
-    // --- 2. Game Engine (Identical Logic, Cleaned up) ---
+    // --- 2. Advanced Snake Engine ---
     const canvas = document.getElementById('game-canvas');
     const ctx = canvas.getContext('2d');
-    const scoreEl = document.getElementById('score');
     
-    let width, height, mouseX = -1000, mouseY = -1000;
-    let totalFoodEaten = 0;
+    let width, height;
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let isBoosting = false;
 
-    const SNAKE_COUNT = 6; 
-    const FOOD_COUNT = 12;
-    // Neon palette
-    const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'];
+    // Snake Config
+    const SNAKE_COUNT = 8;
+    const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ffffff'];
 
     function resize() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', resize); resize();
-    window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+    window.addEventListener('resize', resize);
+    resize();
 
-    class Food {
-        constructor() { this.respawn(); }
-        respawn() {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.size = 3;
-            this.color = '#fff'; // White food looks cleaner
-            this.pulse = Math.random();
-        }
-        draw() {
-            this.pulse += 0.1;
-            const glow = 5 + Math.sin(this.pulse)*2;
-            ctx.shadowBlur = glow; ctx.shadowColor = this.color;
-            ctx.fillStyle = this.color;
-            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
-            ctx.shadowBlur = 0;
-        }
+    // Input Listeners
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    document.addEventListener('mousedown', () => isBoosting = true);
+    document.addEventListener('mouseup', () => isBoosting = false);
+    document.addEventListener('touchstart', () => isBoosting = true);
+    document.addEventListener('touchend', () => isBoosting = false);
+
+    // Shockwave Event
+    document.addEventListener('click', (e) => {
+        // Prevent triggering if clicking a link
+        if(e.target.closest('a')) return;
+        
+        createShockwave(e.clientX, e.clientY);
+    });
+
+    function createShockwave(x, y) {
+        snakes.forEach(snake => {
+            const head = snake.segments[0];
+            const dx = head.x - x;
+            const dy = head.y - y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            
+            // If snake is close to click, force it away instantly
+            if(dist < 300) {
+                const angleAway = Math.atan2(dy, dx);
+                snake.targetAngle = angleAway;
+                snake.angle = angleAway; // Snap angle
+                snake.forceSpeed = 10; // Temp speed burst
+            }
+        });
     }
 
+    // --- SNAKE CLASS ---
     class Snake {
       constructor() {
         this.reset();
         this.segments.forEach(s => { s.x = Math.random() * width; s.y = Math.random() * height; });
       }
+
       reset() {
         this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
         this.angle = Math.random() * Math.PI * 2;
         this.targetAngle = this.angle;
-        this.speed = 1.5 + Math.random(); // Slower, more ambient speed
-        this.turnSpeed = 0.03;
-        this.radius = 4; // Thicker lines
-        this.targetLength = 20 + Math.floor(Math.random() * 20);
+        this.baseSpeed = 2 + Math.random();
+        this.forceSpeed = 0; // For shockwaves
+        this.turnSpeed = 0.05;
+        this.radius = 5;
+        this.length = 25 + Math.floor(Math.random() * 20);
         this.segments = [];
-        for(let i=0; i<this.targetLength; i++) { this.segments.push({x:0, y:0}); }
+        for(let i=0; i<this.length; i++) { this.segments.push({x:0, y:0}); }
       }
-      grow() { this.targetLength += 8; }
-      update(foodArray) {
-        this.targetAngle += (Math.random() - 0.5) * 0.2;
-        const head = this.segments[0];
-        // Mouse Avoidance
-        const dxM = head.x - mouseX; const dyM = head.y - mouseY;
-        if(Math.sqrt(dxM*dxM + dyM*dyM) < 200) { this.targetAngle = Math.atan2(dyM, dxM); }
 
+      update() {
+        // 1. AI Logic
+        if (this.forceSpeed > 0) {
+            // Decelerate from shockwave
+            this.forceSpeed *= 0.95;
+            if(this.forceSpeed < 0.1) this.forceSpeed = 0;
+        } else {
+            // Normal Wandering
+            this.targetAngle += (Math.random() - 0.5) * 0.3;
+        }
+
+        // 2. Rotation
         let diff = this.targetAngle - this.angle;
         while (diff < -Math.PI) diff += Math.PI * 2;
         while (diff > Math.PI) diff -= Math.PI * 2;
         this.angle += diff * this.turnSpeed;
 
-        let nextX = head.x + Math.cos(this.angle) * this.speed;
-        let nextY = head.y + Math.sin(this.angle) * this.speed;
+        // 3. Movement
+        let currentSpeed = (isBoosting ? this.baseSpeed * 2.5 : this.baseSpeed) + this.forceSpeed;
+        
+        let vx = Math.cos(this.angle) * currentSpeed;
+        let vy = Math.sin(this.angle) * currentSpeed;
 
+        let nextX = this.segments[0].x + vx;
+        let nextY = this.segments[0].y + vy;
+
+        // 4. Wrap Screen
         if (nextX < 0) nextX = width; if (nextX > width) nextX = 0;
         if (nextY < 0) nextY = height; if (nextY > height) nextY = 0;
 
         this.segments.unshift({x: nextX, y: nextY});
-
-        for(let i = 0; i < foodArray.length; i++) {
-            const f = foodArray[i];
-            const dist = Math.hypot(head.x - f.x, head.y - f.y);
-            if(dist < this.radius + f.size + 10) {
-                f.respawn(); this.grow(); totalFoodEaten++; scoreEl.innerText = totalFoodEaten;
-            }
-        }
-        if (this.segments.length > this.targetLength) this.segments.pop();
+        if (this.segments.length > this.length) this.segments.pop();
       }
+
       draw() {
         ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = this.radius * 2;
         ctx.shadowBlur = 10; ctx.shadowColor = this.color; ctx.strokeStyle = this.color;
+
         ctx.beginPath();
         if(this.segments.length > 0) ctx.moveTo(this.segments[0].x, this.segments[0].y);
+        
         for (let i = 1; i < this.segments.length; i++) {
           const curr = this.segments[i]; const prev = this.segments[i-1];
+          // Fix wrapping glitches
           if (Math.abs(curr.x - prev.x) + Math.abs(curr.y - prev.y) > 100) {
             ctx.stroke(); ctx.beginPath(); ctx.moveTo(curr.x, curr.y);
           } else { ctx.lineTo(curr.x, curr.y); }
         }
-        ctx.stroke(); ctx.shadowBlur = 0;
+        ctx.stroke(); 
+        
+        // --- EYES (Interactive!) ---
+        ctx.shadowBlur = 0;
+        const head = this.segments[0];
+        
+        // Calculate angle to mouse for eyes
+        const dx = mouseX - head.x;
+        const dy = mouseY - head.y;
+        let eyeAngle = Math.atan2(dy, dx);
+        
+        // If mouse is too far or wrapping, default to head direction
+        // if(Math.sqrt(dx*dx + dy*dy) > 400) eyeAngle = this.angle; 
+
+        // Draw Eye Whites
+        ctx.fillStyle = 'white';
+        const leftEyeX = head.x + Math.cos(this.angle - 0.7) * (this.radius * 0.8);
+        const leftEyeY = head.y + Math.sin(this.angle - 0.7) * (this.radius * 0.8);
+        const rightEyeX = head.x + Math.cos(this.angle + 0.7) * (this.radius * 0.8);
+        const rightEyeY = head.y + Math.sin(this.angle + 0.7) * (this.radius * 0.8);
+
+        ctx.beginPath(); ctx.arc(leftEyeX, leftEyeY, 3, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(rightEyeX, rightEyeY, 3, 0, Math.PI*2); ctx.fill();
+
+        // Draw Pupils (Look at mouse)
+        ctx.fillStyle = 'black';
+        ctx.beginPath(); ctx.arc(leftEyeX + Math.cos(eyeAngle)*1, leftEyeY + Math.sin(eyeAngle)*1, 1.5, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(rightEyeX + Math.cos(eyeAngle)*1, rightEyeY + Math.sin(eyeAngle)*1, 1.5, 0, Math.PI*2); ctx.fill();
       }
     }
 
     const snakes = Array.from({length: SNAKE_COUNT}, () => new Snake());
-    const foods = Array.from({length: FOOD_COUNT}, () => new Food());
 
     function animate() {
-      // Clear with very slight fade for trail? No, clearRect is cleaner for this look
       ctx.clearRect(0, 0, width, height);
-      foods.forEach(f => f.draw());
-      snakes.forEach(s => { s.update(foods); s.draw(); });
+      snakes.forEach(s => { s.update(); s.draw(); });
       requestAnimationFrame(animate);
     }
     animate();
+
   </script>
 </body>
 </html>

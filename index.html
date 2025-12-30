@@ -4,254 +4,288 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Bad Vibes Socials</title>
-  <meta name="theme-color" content="#0f0f0f">
+  <meta name="theme-color" content="#000000">
 
   <meta property="og:image" content="./img/profile.png">
   <link rel="icon" type="image/x-icon" href="./img/icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6RPDDNFTXY"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-6RPDDNFTXY');
-  </script>
-
   <style>
-    /* --- Base Variables --- */
+    /* --- CSS Reset & Variables --- */
     :root {
-      --bg-color: #050505;
-      --text-color: #ffffff;
-      --card-bg: rgba(20, 20, 20, 0.4);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --btn-bg: rgba(255, 255, 255, 0.05);
-      --snake-color: #00f2ea;
-      --snake-glow: #00f2ea;
+      --bg: #050505;
+      --card-bg: rgba(20, 20, 20, 0.65); /* Darker, more opaque glass */
+      --card-border: rgba(255, 255, 255, 0.1);
+      --highlight: #ffffff;
+      --accent: #00f2ea;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg);
+      color: #fff;
       height: 100vh;
-      overflow: hidden; /* Prevent scrolling, background covers all */
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    /* --- Canvas Background (The Snake) --- */
-    canvas#snake-canvas {
+    /* --- Background Canvas --- */
+    canvas#game-canvas {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: 0;
+      /* Subtle grid pattern overlay */
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
     }
 
-    /* --- Main Content --- */
+    /* --- Layout & Card --- */
     main {
       position: relative;
       z-index: 10;
       width: 100%;
-      height: 100%;
-      overflow-y: auto; /* Allow scrolling content inside */
+      padding: 1rem;
       display: flex;
       justify-content: center;
-      padding: 2rem 1rem;
     }
 
-    .link-card {
+    .glass-card {
       width: 100%;
-      max-width: 420px;
-      margin-top: 2rem;
-      margin-bottom: 5rem; /* Space for floating icon */
+      max-width: 400px;
       background: var(--card-bg);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
+      backdrop-filter: blur(20px) saturate(120%);
+      -webkit-backdrop-filter: blur(20px) saturate(120%);
       border: 1px solid var(--card-border);
-      border-radius: 30px;
-      padding: 2.5rem 2rem;
+      border-radius: 24px;
+      padding: 3rem 2rem;
       text-align: center;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-      animation: slideUp 0.8s ease-out forwards;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(40px); }
+    @keyframes fadeInUp {
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* --- Header & Profile --- */
-    .profile-wrapper {
-      display: inline-block;
-      padding: 4px;
-      background: linear-gradient(135deg, #00f2ea, #ff0050);
-      border-radius: 50%;
-      margin-bottom: 1rem;
-      transform-style: preserve-3d;
+    /* --- Profile --- */
+    .profile-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1.5rem;
     }
 
     .profile-img {
-      width: 110px;
-      height: 110px;
+      width: 100%; height: 100%;
       border-radius: 50%;
-      border: 4px solid #111;
-      display: block;
-      transform: translateZ(20px);
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.1);
+      position: relative;
+      z-index: 2;
     }
 
-    h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.2rem; }
-    .bio { font-size: 0.95rem; color: rgba(255,255,255,0.6); margin-bottom: 2rem; }
+    /* Glowing Ring behind profile */
+    .ring {
+      position: absolute;
+      top: -5px; left: -5px; right: -5px; bottom: -5px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #ff0050, #00f2ea, #1877F2);
+      z-index: 1;
+      animation: spin 3s linear infinite;
+      filter: blur(10px);
+      opacity: 0.7;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    /* --- Links --- */
-    .link-list { display: flex; flex-direction: column; gap: 1rem; }
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 0.25rem;
+      background: linear-gradient(to right, #fff, #999);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-    .link-btn {
+    p.role {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.9rem;
+      margin-bottom: 2.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 500;
+    }
+
+    /* --- Modern Link Buttons --- */
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn {
       position: relative;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 1rem 1.5rem;
-      background: var(--btn-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 50px;
-      color: white;
+      padding: 18px 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
       text-decoration: none;
+      color: #fff;
       font-weight: 600;
       transition: all 0.3s ease;
       overflow: hidden;
     }
 
-    .link-btn i { position: absolute; left: 24px; font-size: 1.3rem; }
-
-    .link-btn:hover {
-      background: rgba(255,255,255,0.15);
-      transform: scale(1.02);
-      border-color: rgba(255,255,255,0.4);
-      box-shadow: 0 0 15px rgba(255,255,255,0.1);
-    }
-
-    /* Brand Colors on Hover */
-    .fb:hover { border-color: #1877F2; box-shadow: 0 0 20px rgba(24, 119, 242, 0.4); }
-    .yt:hover { border-color: #FF0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
-    .ig:hover { border-color: #E1306C; box-shadow: 0 0 20px rgba(225, 48, 108, 0.4); }
-    .tt:hover { border-color: #00f2ea; box-shadow: 0 0 20px rgba(0, 242, 234, 0.4); }
-
-    /* --- Floating SVG Mascot --- */
-    .floating-mascot {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      z-index: 100;
-      cursor: pointer;
-      filter: drop-shadow(0 0 10px rgba(0, 242, 234, 0.5));
-      animation: floatMascot 3s ease-in-out infinite;
+    .btn i {
+      font-size: 1.4rem;
+      width: 30px;
+      text-align: center;
+      margin-right: 15px;
       transition: transform 0.3s;
     }
 
-    .floating-mascot:hover {
-      transform: scale(1.1) rotate(5deg);
+    .btn span {
+      position: relative;
+      z-index: 2;
     }
 
-    /* The Float Animation */
-    @keyframes floatMascot {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
+    /* Hover States */
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 0%; height: 100%;
+      background: rgba(255,255,255,0.1);
+      transition: width 0.3s ease;
+      z-index: 1;
     }
 
-    /* SVG Styling */
-    .mascot-svg path {
-      fill: #fff;
+    .btn:hover::before { width: 100%; }
+    .btn:hover { 
+      transform: translateX(5px); 
+      border-color: rgba(255,255,255,0.3);
+      box-shadow: 0 0 20px rgba(255,255,255,0.05);
     }
-    .mascot-svg .eyes {
-      fill: #050505;
-    }
+    .btn:hover i { transform: scale(1.2); }
 
-    /* Mobile Responsive */
-    @media (max-width: 480px) {
-      .link-card { padding: 2rem 1.5rem; }
-      .floating-mascot { width: 50px; height: 50px; bottom: 15px; right: 15px; }
+    /* Specific Brand Accents on Hover */
+    .fb:hover { border-color: #1877F2; box-shadow: 0 0 15px rgba(24,119,242,0.2); }
+    .yt:hover { border-color: #FF0000; box-shadow: 0 0 15px rgba(255,0,0,0.2); }
+    .ig:hover { border-color: #E1306C; box-shadow: 0 0 15px rgba(225,48,108,0.2); }
+    .tt:hover { border-color: #00f2ea; box-shadow: 0 0 15px rgba(0,242,234,0.2); }
+
+    /* --- Floating Badge --- */
+    .status-badge {
+      position: fixed;
+      bottom: 30px; right: 30px;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid #333;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 20;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      background: #00ff00;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00ff00;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 50% { opacity: 0.5; } }
+
+    @media(max-width: 480px) {
+      .glass-card { padding: 2rem 1.5rem; }
+      h1 { font-size: 1.75rem; }
     }
   </style>
 </head>
 <body>
 
-  <canvas id="snake-canvas"></canvas>
-
-  <div class="floating-mascot" title="Bad Vibes Forever">
-    <svg viewBox="0 0 512 512" class="mascot-svg" xmlns="http://www.w3.org/2000/svg">
-      <path d="M256 48C141.1 48 48 141.1 48 256v208c0 17.7 14.3 32 32 32 10.3 0 19.9-4.8 26-13l46-61.3 46 61.3c6.1 8.2 15.7 13 26 13s19.9-4.8 26-13l46-61.3 46 61.3c6.1 8.2 15.7 13 26 13s19.9-4.8 26-13l46-61.3 46 61.3c6.1 8.2 15.7 13 26 13 17.7 0 32-14.3 32-32V256c0-114.9-93.1-208-208-208zm-64 192c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"/>
-      <path class="eyes" d="M192 208c0 8.8-7.2 16-16 16s-16-7.2-16-16 7.2-16 16-16 16 7.2 16 16zm144 0c0 8.8-7.2 16-16 16s-16-7.2-16-16 7.2-16 16-16 16 7.2 16 16z"/>
-    </svg>
-  </div>
+  <canvas id="game-canvas"></canvas>
 
   <main>
-    <div class="link-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
-      <header>
-        <div class="profile-wrapper">
-          <img src="./img/profile.png" alt="Profile" class="profile-img">
-        </div>
-        <h1>Bad Vibes</h1>
-        <p class="bio">Digital Creator • Socials</p>
-      </header>
+    <div class="glass-card" data-tilt data-tilt-max="3" data-tilt-glare data-tilt-max-glare="0.1">
+      
+      <div class="profile-container">
+        <div class="ring"></div>
+        <img src="./img/profile.png" alt="Profile" class="profile-img">
+      </div>
 
-      <div class="link-list">
-        <a href="https://www.facebook.com/badvibeph/" target="_blank" class="link-btn fb">
-          <i class="fa-brands fa-facebook-f"></i> Facebook
+      <h1>Bad Vibes</h1>
+      <p class="role">Digital Creator</p>
+
+      <div class="links">
+        <a href="https://www.facebook.com/badvibeph/" target="_blank" class="btn fb">
+          <i class="fa-brands fa-facebook-f"></i> <span>Facebook</span>
         </a>
-        <a href="https://www.youtube.com/badvibesph/" target="_blank" class="link-btn yt">
-          <i class="fa-brands fa-youtube"></i> YouTube
+        <a href="https://www.youtube.com/badvibesph/" target="_blank" class="btn yt">
+          <i class="fa-brands fa-youtube"></i> <span>YouTube</span>
         </a>
-        <a href="https://www.instagram.com/badvibesph/" target="_blank" class="link-btn ig">
-          <i class="fa-brands fa-instagram"></i> Instagram
+        <a href="https://www.instagram.com/badvibesph/" target="_blank" class="btn ig">
+          <i class="fa-brands fa-instagram"></i> <span>Instagram</span>
         </a>
-        <a href="https://twitter.com/itsbadvibesph/" target="_blank" class="link-btn tw">
-          <i class="fa-brands fa-x-twitter"></i> Twitter
+        <a href="https://twitter.com/itsbadvibesph/" target="_blank" class="btn tw">
+          <i class="fa-brands fa-x-twitter"></i> <span>Twitter</span>
         </a>
-        <a href="https://www.tiktok.com/@itsbadvibes/" target="_blank" class="link-btn tt">
-          <i class="fa-brands fa-tiktok"></i> TikTok
+        <a href="https://www.tiktok.com/@itsbadvibes/" target="_blank" class="btn tt">
+          <i class="fa-brands fa-tiktok"></i> <span>TikTok</span>
         </a>
       </div>
 
-      <footer style="margin-top:2rem; font-size:0.8rem; opacity:0.6;">
-        &copy; 2024 Bad Vibes.
-      </footer>
     </div>
   </main>
 
+  <div class="status-badge">
+    <div class="dot"></div>
+    <span>Online</span>
+  </div>
+
   <script>
-    /* --- Vanilla Tilt Init --- */
-    VanillaTilt.init(document.querySelector(".link-card"));
+    // --- 3D Tilt Init ---
+    VanillaTilt.init(document.querySelector(".glass-card"), {
+      speed: 400,
+      gyroscope: true
+    });
 
-    /* --- The Slither.io Snake Animation Script --- */
-    const canvas = document.getElementById('snake-canvas');
+    // --- GAME ENGINE ---
+    const canvas = document.getElementById('game-canvas');
     const ctx = canvas.getContext('2d');
+    
     let width, height;
+    let mouseX = -1000;
+    let mouseY = -1000;
+    let isBoosting = false;
 
-    // Snake settings
-    const snake = {
-      length: 60, // How long the snake is
-      segments: [],
-      radius: 8,
-      speed: 3,
-      angle: 0,
-      targetAngle: 0,
-      color: '#00f2ea'
-    };
+    // Slither.io Colors
+    const colors = [
+      '#00f2ea', // Cyan
+      '#ff0050', // Neon Red
+      '#adff02', // Lime
+      '#bd00ff', // Purple
+      '#ffae00'  // Orange
+    ];
 
+    // Resize Handler
     function resize() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
@@ -259,93 +293,170 @@
     window.addEventListener('resize', resize);
     resize();
 
-    // Initialize segments at center
-    for (let i = 0; i < snake.length; i++) {
-      snake.segments.push({ x: width / 2, y: height / 2 });
-    }
+    // Interaction Listeners
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+    window.addEventListener('mousedown', () => isBoosting = true);
+    window.addEventListener('mouseup', () => isBoosting = false);
+    window.addEventListener('touchstart', () => isBoosting = true);
+    window.addEventListener('touchend', () => isBoosting = false);
 
-    // AI Logic for smooth wandering
-    function updateSnake() {
-      // 1. Change angle slowly (Wander behavior)
-      // Randomly adjust target angle slightly
-      snake.targetAngle += (Math.random() - 0.5) * 0.3;
-      
-      // Smoothly rotate current angle towards target angle
-      snake.angle += (snake.targetAngle - snake.angle) * 0.05;
-
-      // 2. Move Head
-      const head = snake.segments[0];
-      const vx = Math.cos(snake.angle) * snake.speed;
-      const vy = Math.sin(snake.angle) * snake.speed;
-
-      let nextX = head.x + vx;
-      let nextY = head.y + vy;
-
-      // 3. Boundary Wrapping (Pacman style)
-      if (nextX < 0) nextX = width;
-      if (nextX > width) nextX = 0;
-      if (nextY < 0) nextY = height;
-      if (nextY > height) nextY = 0;
-
-      // Add new head position to front of array
-      snake.segments.unshift({ x: nextX, y: nextY });
-
-      // Remove tail to maintain length
-      if (snake.segments.length > snake.length) {
-        snake.segments.pop();
+    // --- SNAKE CLASS ---
+    class Snake {
+      constructor() {
+        this.reset();
+        // Scatter start positions
+        this.segments.forEach(s => {
+            s.x = Math.random() * width;
+            s.y = Math.random() * height;
+        });
       }
-    }
 
-    function drawSnake() {
-      // Clear screen with slight trail effect (optional, currently full clear)
-      ctx.clearRect(0, 0, width, height);
-
-      // Draw Glow
-      ctx.shadowBlur = 20;
-      ctx.shadowColor = snake.color;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-
-      // Draw Body
-      ctx.beginPath();
-      // Start at head
-      ctx.moveTo(snake.segments[0].x, snake.segments[0].y);
-
-      // Draw curve through segments
-      for (let i = 1; i < snake.segments.length - 1; i++) {
-        const xc = (snake.segments[i].x + snake.segments[i + 1].x) / 2;
-        const yc = (snake.segments[i].y + snake.segments[i + 1].y) / 2;
-        
-        // Handle wrapping visual glitches (don't draw line across screen)
-        if (Math.abs(snake.segments[i].x - snake.segments[i+1].x) < 100 &&
-            Math.abs(snake.segments[i].y - snake.segments[i+1].y) < 100) {
-             ctx.quadraticCurveTo(snake.segments[i].x, snake.segments[i].y, xc, yc);
-        } else {
-             ctx.moveTo(xc, yc); // Skip the jump
+      reset() {
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.angle = Math.random() * Math.PI * 2;
+        this.targetAngle = this.angle;
+        this.baseSpeed = 2 + Math.random();
+        this.turnSpeed = 0.05;
+        this.radius = 6 + Math.random() * 4;
+        this.length = 30 + Math.floor(Math.random() * 40);
+        this.segments = [];
+        for(let i=0; i<this.length; i++) {
+          this.segments.push({x:0, y:0});
         }
       }
-      
-      ctx.lineWidth = snake.radius * 2;
-      ctx.strokeStyle = snake.color;
-      ctx.stroke();
 
-      // Draw Eyes on Head
-      const head = snake.segments[0];
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = 'white';
-      ctx.beginPath();
-      ctx.arc(head.x + Math.cos(snake.angle + 1)*6, head.y + Math.sin(snake.angle + 1)*6, 3, 0, Math.PI * 2);
-      ctx.arc(head.x + Math.cos(snake.angle - 1)*6, head.y + Math.sin(snake.angle - 1)*6, 3, 0, Math.PI * 2);
-      ctx.fill();
+      update() {
+        // AI: Wander randomly
+        this.targetAngle += (Math.random() - 0.5) * 0.5;
+
+        // AI: Avoid Mouse
+        const head = this.segments[0];
+        const dx = head.x - mouseX;
+        const dy = head.y - mouseY;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        
+        if(dist < 200) {
+          // Calculate angle away from mouse
+          const angleAway = Math.atan2(dy, dx);
+          // Gently steer towards that angle
+          this.targetAngle = angleAway;
+        }
+
+        // Smooth rotation
+        // Minimal logic to handle angle wrapping (0 to 2PI)
+        let diff = this.targetAngle - this.angle;
+        while (diff < -Math.PI) diff += Math.PI * 2;
+        while (diff > Math.PI) diff -= Math.PI * 2;
+        this.angle += diff * this.turnSpeed;
+
+        // Move
+        const speed = isBoosting ? this.baseSpeed * 2.5 : this.baseSpeed;
+        const vx = Math.cos(this.angle) * speed;
+        const vy = Math.sin(this.angle) * speed;
+
+        let nextX = head.x + vx;
+        let nextY = head.y + vy;
+
+        // Wrap Screen (Pacman style)
+        if (nextX < 0) nextX = width;
+        if (nextX > width) nextX = 0;
+        if (nextY < 0) nextY = height;
+        if (nextY > height) nextY = 0;
+
+        // Update Segments
+        this.segments.unshift({x: nextX, y: nextY});
+        if (this.segments.length > this.length) {
+          this.segments.pop();
+        }
+      }
+
+      draw() {
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = this.radius * 2;
+        
+        // Shadow/Glow
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = this.color;
+        ctx.strokeStyle = this.color;
+
+        ctx.beginPath();
+        
+        // Start at head
+        if(this.segments.length > 0) {
+            ctx.moveTo(this.segments[0].x, this.segments[0].y);
+        }
+
+        // Draw body
+        for (let i = 1; i < this.segments.length; i++) {
+          const curr = this.segments[i];
+          const prev = this.segments[i-1];
+
+          // STRETCH FIX:
+          // If distance between points is too large, it means we wrapped screen.
+          // Don't draw a line there. Start a new path.
+          const dist = Math.abs(curr.x - prev.x) + Math.abs(curr.y - prev.y);
+          
+          if (dist > 100) {
+            ctx.stroke(); // Draw what we have so far
+            ctx.beginPath(); // Start new line
+            ctx.moveTo(curr.x, curr.y);
+          } else {
+            // Smooth curve
+            // Using straight lines for segment connectors is faster and looks fine for snakes
+            ctx.lineTo(curr.x, curr.y);
+          }
+        }
+        ctx.stroke();
+
+        // Reset shadow for performance
+        ctx.shadowBlur = 0;
+
+        // Eyes (Cute factor)
+        const head = this.segments[0];
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        // Left Eye
+        ctx.arc(
+          head.x + Math.cos(this.angle - 0.8) * (this.radius*0.6), 
+          head.y + Math.sin(this.angle - 0.8) * (this.radius*0.6), 
+          this.radius * 0.4, 0, Math.PI*2
+        );
+        // Right Eye
+        ctx.arc(
+          head.x + Math.cos(this.angle + 0.8) * (this.radius*0.6), 
+          head.y + Math.sin(this.angle + 0.8) * (this.radius*0.6), 
+          this.radius * 0.4, 0, Math.PI*2
+        );
+        ctx.fill();
+      }
     }
 
+    // --- INIT ---
+    const snakes = [];
+    const SNAKE_COUNT = 8; // Multiple snakes
+
+    for(let i=0; i<SNAKE_COUNT; i++) {
+      snakes.push(new Snake());
+    }
+
+    // --- ANIMATION LOOP ---
     function animate() {
-      updateSnake();
-      drawSnake();
+      // Clear with slight fade for trail effect? No, clean clear looks more modern for this style.
+      ctx.clearRect(0, 0, width, height);
+
+      snakes.forEach(snake => {
+        snake.update();
+        snake.draw();
+      });
+
       requestAnimationFrame(animate);
     }
-
     animate();
+
   </script>
 </body>
 </html>

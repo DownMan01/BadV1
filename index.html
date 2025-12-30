@@ -4,33 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Bad Vibes Socials</title>
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#0a0a0a">
 
   <meta property="og:image" content="./img/profile.png">
   <link rel="icon" type="image/x-icon" href="./img/icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 
   <style>
+    /* --- Modern Reset & Variables --- */
     :root {
       --bg: #050505;
-      /* Elegant Theme Variables */
-      --card-glass: rgba(20, 20, 20, 0.6);
-      --card-border: rgba(255, 255, 255, 0.06);
+      --card-bg: #111111;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --item-bg: #1a1a1a;
+      --item-hover: #252525;
       --text-main: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.5);
-      --btn-bg: rgba(255, 255, 255, 0.03);
-      --btn-hover: rgba(255, 255, 255, 0.12);
+      --text-sub: #888888;
+      --accent: #3b82f6; /* Verification Blue */
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--bg);
       color: var(--text-main);
       height: 100vh;
@@ -41,13 +42,11 @@
       position: relative;
     }
 
-    /* --- Background Game Canvas --- */
+    /* --- Background Canvas --- */
     canvas#game-canvas {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: 0;
-      /* Very subtle noise texture over the black bg */
-      opacity: 0.8; 
     }
 
     /* --- Main Layout --- */
@@ -55,143 +54,166 @@
       position: relative;
       z-index: 10;
       width: 100%;
-      padding: 1.5rem;
-      display: flex;
-      justify-content: center;
-    }
-
-    /* --- Elegant Glass Card --- */
-    .glass-card {
-      width: 100%;
-      max-width: 400px;
-      /* High blur for premium feel */
-      background: var(--card-glass);
-      backdrop-filter: blur(40px) saturate(110%);
-      -webkit-backdrop-filter: blur(40px) saturate(110%);
-      /* Thin, subtle border */
-      border: 1px solid var(--card-border);
-      border-radius: 32px;
-      padding: 3rem 2rem;
-      text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      
-      opacity: 0;
-      transform: translateY(20px);
-      animation: softEntrance 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes softEntrance {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* --- Profile --- */
-    .profile-section {
-      margin-bottom: 2.5rem;
+      height: 100%;
+      overflow-y: auto; /* Allow scrolling on small screens */
+      padding: 2rem 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    .img-wrapper {
-      width: 100px; height: 100px;
-      margin-bottom: 1rem;
-      border-radius: 50%;
-      padding: 3px;
-      /* Subtle gradient ring */
-      background: linear-gradient(to bottom right, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+    /* --- The Modern Card --- */
+    .profile-card {
+      width: 100%;
+      max-width: 420px;
+      /* Solid semi-transparent dark base for contrast against game */
+      background: rgba(15, 15, 15, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 6px; /* Inner padding for the "framed" look */
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7);
+      
+      opacity: 0;
+      animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.95) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* --- Header Section --- */
+    .card-header {
+      background: var(--item-bg);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      margin-bottom: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle glow behind profile */
+    .card-header::before {
+        content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
+        pointer-events: none;
     }
 
     .profile-img {
-      width: 100%; height: 100%;
+      width: 96px; height: 96px;
       border-radius: 50%;
+      border: 3px solid #2a2a2a;
       object-fit: cover;
-      display: block;
+      margin-bottom: 1rem;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+
+    .identity-row {
+        display: flex; align-items: center; justify-content: center; gap: 6px;
+        margin-bottom: 4px;
     }
 
     h1 {
-      font-size: 1.5rem;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.25rem;
+      font-size: 1.25rem;
+      font-weight: 700;
       color: #fff;
+    }
+
+    .verified-icon {
+        color: var(--accent);
+        font-size: 1rem;
     }
 
     .bio {
       font-size: 0.9rem;
-      color: var(--text-muted);
-      font-weight: 400;
+      color: var(--text-sub);
+      font-weight: 500;
     }
 
-    /* --- Minimalist Buttons --- */
-    .link-list {
+    /* --- Links Section --- */
+    .links-wrapper {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 6px;
     }
 
-    .clean-btn {
+    .link-item {
       display: flex;
       align-items: center;
-      /* Justify between to separate text and arrow if needed, but centering is cleaner */
-      justify-content: center; 
-      position: relative;
-      width: 100%;
-      padding: 16px;
-      background: var(--btn-bg);
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--item-bg);
       border-radius: 18px;
       text-decoration: none;
-      color: var(--text-main);
-      font-size: 0.95rem;
-      font-weight: 400;
-      transition: all 0.3s ease;
-    }
-
-    .clean-btn i {
-      position: absolute;
-      left: 20px;
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      transition: color 0.3s;
-    }
-
-    .clean-btn span {
-      z-index: 2;
-    }
-
-    /* Hover Effect: Simple Scale & Lighten */
-    .clean-btn:hover {
-      background: var(--btn-hover);
-      transform: scale(1.02);
-    }
-    .clean-btn:hover i {
       color: #fff;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      group: hover;
     }
 
-    /* Small brand accents only on hover */
-    .fb:hover { color: #1877F2; }
-    .yt:hover { color: #FF0000; }
-    .ig:hover { color: #E1306C; }
-    .tw:hover { color: #1DA1F2; }
-    .tt:hover { color: #00f2ea; }
+    /* Left side: Icon box + Text */
+    .link-left {
+        display: flex; align-items: center; gap: 16px;
+    }
 
-    /* --- Score Pill --- */
-    .score-pill {
-        position: fixed;
-        bottom: 25px;
-        background: rgba(30,30,30,0.8);
-        border: 1px solid rgba(255,255,255,0.1);
-        padding: 8px 16px;
-        border-radius: 100px;
-        font-size: 0.8rem;
-        color: var(--text-muted);
+    .icon-box {
+        width: 40px; height: 40px;
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem;
+        background: #222;
+        color: #fff;
+        transition: transform 0.2s ease;
+    }
+
+    .link-text {
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    /* Right side: Arrow */
+    .link-arrow {
+        color: #444;
+        transition: color 0.2s, transform 0.2s;
+    }
+
+    /* Hover States */
+    .link-item:hover {
+        background: var(--item-hover);
+        transform: translateY(-2px);
+        border-color: rgba(255,255,255,0.05);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .link-item:hover .link-arrow {
+        color: #fff;
+        transform: translateX(4px);
+    }
+
+    /* Brand Specific Colors on Hover */
+    .link-item:hover .icon-box.fb-icon { background: #1877F2; }
+    .link-item:hover .icon-box.yt-icon { background: #FF0000; }
+    .link-item:hover .icon-box.ig-icon { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .link-item:hover .icon-box.tw-icon { background: #fff; color: #000; }
+    .link-item:hover .icon-box.tt-icon { background: #00f2ea; color: #000; }
+
+    /* --- Footer / Score --- */
+    .footer-bar {
+        margin-top: 1rem;
+        padding: 0.8rem 1.5rem;
+        background: rgba(0,0,0,0.5);
         backdrop-filter: blur(10px);
-        z-index: 20;
+        border-radius: 50px;
+        border: 1px solid rgba(255,255,255,0.1);
+        display: flex;
+        gap: 15px;
+        align-items: center;
     }
-    .score-pill span { color: #fff; font-weight: 600; margin-left: 5px; }
+    .score-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e;}
+    .score-text { font-size: 0.85rem; color: #ccc; font-weight: 600; }
 
-    @media(max-width: 480px) {
-      .glass-card { padding: 2.5rem 1.5rem; }
-    }
   </style>
 </head>
 <body>
@@ -199,56 +221,74 @@
   <canvas id="game-canvas"></canvas>
 
   <main>
-    <div class="glass-card" data-tilt data-tilt-max="3" data-tilt-glare data-tilt-max-glare="0.05">
+    <div class="profile-card" data-tilt data-tilt-max="2" data-tilt-speed="400">
       
-      <div class="profile-section">
-        <div class="img-wrapper">
-          <img src="./img/profile.png" alt="Profile" class="profile-img">
+      <div class="card-header">
+        <img src="./img/profile.png" alt="Profile" class="profile-img">
+        <div class="identity-row">
+            <h1>Bad Vibes</h1>
+            <i class="fa-solid fa-circle-check verified-icon" title="Verified Creator"></i>
         </div>
-        <h1>Bad Vibes</h1>
-        <p class="bio">Digital Creator</p>
-      </header>
-
-      <div class="link-list">
-        <a href="https://www.facebook.com/badvibeph/" target="_blank" class="clean-btn fb">
-          <i class="fa-brands fa-facebook-f"></i>
-          <span>Facebook</span>
-        </a>
-        <a href="https://www.youtube.com/badvibesph/" target="_blank" class="clean-btn yt">
-          <i class="fa-brands fa-youtube"></i>
-          <span>YouTube</span>
-        </a>
-        <a href="https://www.instagram.com/badvibesph/" target="_blank" class="clean-btn ig">
-          <i class="fa-brands fa-instagram"></i>
-          <span>Instagram</span>
-        </a>
-        <a href="https://twitter.com/itsbadvibesph/" target="_blank" class="clean-btn tw">
-          <i class="fa-brands fa-x-twitter"></i>
-          <span>Twitter</span>
-        </a>
-        <a href="https://www.tiktok.com/@itsbadvibes/" target="_blank" class="clean-btn tt">
-          <i class="fa-brands fa-tiktok"></i>
-          <span>TikTok</span>
-        </a>
+        <p class="bio">Digital Creator • Gaming • Lifestyle</p>
       </div>
 
+      <div class="links-wrapper">
+        
+        <a href="https://www.facebook.com/badvibeph/" target="_blank" class="link-item">
+            <div class="link-left">
+                <div class="icon-box fb-icon"><i class="fa-brands fa-facebook-f"></i></div>
+                <span class="link-text">Facebook</span>
+            </div>
+            <i class="fa-solid fa-chevron-right link-arrow"></i>
+        </a>
+
+        <a href="https://www.youtube.com/badvibesph/" target="_blank" class="link-item">
+            <div class="link-left">
+                <div class="icon-box yt-icon"><i class="fa-brands fa-youtube"></i></div>
+                <span class="link-text">YouTube</span>
+            </div>
+            <i class="fa-solid fa-chevron-right link-arrow"></i>
+        </a>
+
+        <a href="https://www.instagram.com/badvibesph/" target="_blank" class="link-item">
+            <div class="link-left">
+                <div class="icon-box ig-icon"><i class="fa-brands fa-instagram"></i></div>
+                <span class="link-text">Instagram</span>
+            </div>
+            <i class="fa-solid fa-chevron-right link-arrow"></i>
+        </a>
+
+        <a href="https://twitter.com/itsbadvibesph/" target="_blank" class="link-item">
+            <div class="link-left">
+                <div class="icon-box tw-icon"><i class="fa-brands fa-x-twitter"></i></div>
+                <span class="link-text">Twitter / X</span>
+            </div>
+            <i class="fa-solid fa-chevron-right link-arrow"></i>
+        </a>
+
+        <a href="https://www.tiktok.com/@itsbadvibes/" target="_blank" class="link-item">
+            <div class="link-left">
+                <div class="icon-box tt-icon"><i class="fa-brands fa-tiktok"></i></div>
+                <span class="link-text">TikTok</span>
+            </div>
+            <i class="fa-solid fa-chevron-right link-arrow"></i>
+        </a>
+
+      </div>
     </div>
+
+    <div class="footer-bar">
+        <div class="score-dot"></div>
+        <div class="score-text">Snake Energy: <span id="score">0</span></div>
+    </div>
+
   </main>
 
-  <div class="score-pill">
-    Energy Collected <span id="score">0</span>
-  </div>
-
   <script>
-    // --- Tilt Init ---
-    VanillaTilt.init(document.querySelector(".glass-card"), {
-        speed: 800,
-        perspective: 1000,
-        scale: 1.01
-    });
+    // --- 1. Tilt Effect (Subtle) ---
+    VanillaTilt.init(document.querySelector(".profile-card"));
 
-    // --- GAME ENGINE (Snakes & Food) ---
-    // (Kept exactly the same as previous request, just rendering on the background)
+    // --- 2. Game Engine (Identical Logic, Cleaned up) ---
     const canvas = document.getElementById('game-canvas');
     const ctx = canvas.getContext('2d');
     const scoreEl = document.getElementById('score');
@@ -256,11 +296,10 @@
     let width, height, mouseX = -1000, mouseY = -1000;
     let totalFoodEaten = 0;
 
-    // SNAKE CONFIG
-    const SNAKE_COUNT = 5; // Reduced slightly for cleaner aesthetic
-    const FOOD_COUNT = 15;
-    // Muted Neon Colors for Elegance
-    const COLORS = ['#00f2ea', '#ff0050', '#7000ff', '#ffffff'];
+    const SNAKE_COUNT = 6; 
+    const FOOD_COUNT = 12;
+    // Neon palette
+    const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'];
 
     function resize() {
       width = canvas.width = window.innerWidth;
@@ -274,11 +313,14 @@
         respawn() {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
-            this.size = 2 + Math.random() * 2; // Smaller dots
-            this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            this.size = 3;
+            this.color = '#fff'; // White food looks cleaner
+            this.pulse = Math.random();
         }
         draw() {
-            ctx.shadowBlur = 10; ctx.shadowColor = this.color;
+            this.pulse += 0.1;
+            const glow = 5 + Math.sin(this.pulse)*2;
+            ctx.shadowBlur = glow; ctx.shadowColor = this.color;
             ctx.fillStyle = this.color;
             ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
             ctx.shadowBlur = 0;
@@ -294,28 +336,26 @@
         this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
         this.angle = Math.random() * Math.PI * 2;
         this.targetAngle = this.angle;
-        this.speed = 2 + Math.random();
-        this.turnSpeed = 0.04;
-        this.radius = 3 + Math.random() * 3; // Thinner snakes
-        this.targetLength = 30 + Math.floor(Math.random() * 30);
+        this.speed = 1.5 + Math.random(); // Slower, more ambient speed
+        this.turnSpeed = 0.03;
+        this.radius = 4; // Thicker lines
+        this.targetLength = 20 + Math.floor(Math.random() * 20);
         this.segments = [];
         for(let i=0; i<this.targetLength; i++) { this.segments.push({x:0, y:0}); }
       }
-      grow() { this.targetLength += 10; }
+      grow() { this.targetLength += 8; }
       update(foodArray) {
-        this.targetAngle += (Math.random() - 0.5) * 0.2; // Gentler wandering
+        this.targetAngle += (Math.random() - 0.5) * 0.2;
         const head = this.segments[0];
-        // Avoid Mouse
+        // Mouse Avoidance
         const dxM = head.x - mouseX; const dyM = head.y - mouseY;
-        if(Math.sqrt(dxM*dxM + dyM*dyM) < 150) { this.targetAngle = Math.atan2(dyM, dxM); }
+        if(Math.sqrt(dxM*dxM + dyM*dyM) < 200) { this.targetAngle = Math.atan2(dyM, dxM); }
 
-        // Rotation
         let diff = this.targetAngle - this.angle;
         while (diff < -Math.PI) diff += Math.PI * 2;
         while (diff > Math.PI) diff -= Math.PI * 2;
         this.angle += diff * this.turnSpeed;
 
-        // Move
         let nextX = head.x + Math.cos(this.angle) * this.speed;
         let nextY = head.y + Math.sin(this.angle) * this.speed;
 
@@ -324,7 +364,6 @@
 
         this.segments.unshift({x: nextX, y: nextY});
 
-        // Eat Food
         for(let i = 0; i < foodArray.length; i++) {
             const f = foodArray[i];
             const dist = Math.hypot(head.x - f.x, head.y - f.y);
@@ -336,7 +375,7 @@
       }
       draw() {
         ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = this.radius * 2;
-        ctx.shadowBlur = 15; ctx.shadowColor = this.color; ctx.strokeStyle = this.color;
+        ctx.shadowBlur = 10; ctx.shadowColor = this.color; ctx.strokeStyle = this.color;
         ctx.beginPath();
         if(this.segments.length > 0) ctx.moveTo(this.segments[0].x, this.segments[0].y);
         for (let i = 1; i < this.segments.length; i++) {
@@ -353,6 +392,7 @@
     const foods = Array.from({length: FOOD_COUNT}, () => new Food());
 
     function animate() {
+      // Clear with very slight fade for trail? No, clearRect is cleaner for this look
       ctx.clearRect(0, 0, width, height);
       foods.forEach(f => f.draw());
       snakes.forEach(s => { s.update(foods); s.draw(); });

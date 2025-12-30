@@ -1,98 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6639387700552171"crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bad Vibes Socials</title>
-  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+
   <meta property="og:image" content="/img/profile.png" />
   <meta property="og:type" content="website" />
-
+  <meta name="description" content="Connect with Bad Vibes Socials across all platforms.">
   <link rel="icon" type="image/x-icon" href="./img/icon.png">
-  <link rel="stylesheet" href="style/style.css">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6639387700552171" crossorigin="anonymous"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6RPDDNFTXY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-6RPDDNFTXY');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6RPDDNFTXY"></script>
   <script>
-    window.addEventListener("DOMContentLoaded", ()=>{
-      VANTA.BIRDS({
-        el: "#vanta",
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        scale: 1.00,
-        scaleMobile: 1.00,
-        wingSpan: 40.00,
-        speedLimit: 8.00,
-        separation: 100.00,
-        alignment: 43.00,
-        quantity: 2.00,
-        backgroundAlpha:0.0,
-      })
-      setTimeout(()=>{
-      document.querySelector('main').style.opacity='1';
-      document.querySelector('main').style.filter='none';
-      },1000)
-    })
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6RPDDNFTXY');
   </script>
+
+  <style>
+    /* --- CSS Reset & Base --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0f0f0f; /* Fallback color */
+      color: #ffffff;
+      height: 100vh;
+      overflow: hidden; /* Vanta background covers full screen */
+      position: relative;
+    }
+
+    /* --- Background Container --- */
+    #vanta {
+      position: absolute;
+      z-index: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* --- Main Layout --- */
+    main {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      overflow-y: auto; /* Allows scrolling if content is long */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      opacity: 0; /* Hidden initially for fade-in */
+      transition: opacity 1s ease;
+    }
+
+    /* --- Glassmorphism Card --- */
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      margin-top: 2rem;
+    }
+
+    /* --- Profile Section --- */
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-img:hover {
+      transform: scale(1.05);
+      border-color: #ffffff;
+    }
+
+    .username {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .bio {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 2rem;
+    }
+
+    /* --- Links List --- */
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center; /* Center content */
+      position: relative;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      padding: 1rem;
+      border-radius: 50px; /* Pill shape */
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      border: 1px solid transparent;
+    }
+
+    .link-btn i {
+      position: absolute;
+      left: 20px;
+      font-size: 1.2rem;
+    }
+
+    .link-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Specific Brand Colors on Hover (Optional) */
+    .link-btn:hover .fa-facebook { color: #1877F2; }
+    .link-btn:hover .fa-youtube { color: #FF0000; }
+    .link-btn:hover .fa-instagram { color: #E4405F; }
+    .link-btn:hover .fa-twitter, .link-btn:hover .fa-x-twitter { color: #1DA1F2; }
+    .link-btn:hover .fa-tiktok { color: #00f2ea; text-shadow: 2px 2px #ff0050; }
+
+    /* --- Footer --- */
+    footer {
+      margin-top: 3rem;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* --- Scrollbar --- */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+    }
+  </style>
 </head>
 
 <body>
+  
   <div id="vanta"></div>
+
   <main>
-    <header>
-      <img src="./img/profile.png" alt="profile">
-    </header>
+    <div class="container">
+      <header>
+        <img src="./img/profile.png" alt="Bad Vibes Profile" class="profile-img">
+        <h1 class="username">Bad Vibes</h1>
+        <p class="bio">@badvibesph • Content Creator</p>
+      </header>
 
-    <div id="center">
-      <button class="btn">
-        <a target="_blank" href="https://www.facebook.com/badvibeph/">
-          Facebook
+      <div class="links">
+        <a target="_blank" href="https://www.facebook.com/badvibeph/" class="link-btn">
+          <i class="fa-brands fa-facebook"></i>
+          <span>Facebook</span>
         </a>
-      </button>
-      <button class="btn">
-        <a target="_blank" href="https://www.youtube.com/badvibesph/">
-          YouTube
+        
+        <a target="_blank" href="https://www.youtube.com/badvibesph/" class="link-btn">
+          <i class="fa-brands fa-youtube"></i>
+          <span>YouTube</span>
         </a>
-      </button>
-      <button class="btn">
-        <a target="_blank" href="https://www.instagram.com/badvibesph/">
-          Instagram
+        
+        <a target="_blank" href="https://www.instagram.com/badvibesph/" class="link-btn">
+          <i class="fa-brands fa-instagram"></i>
+          <span>Instagram</span>
         </a>
-      </button>
-      <button class="btn">
-        <a target="_blank" href="https://twitter.com/itsbadvibesph/">
-          Twitter
+        
+        <a target="_blank" href="https://twitter.com/itsbadvibesph/" class="link-btn">
+          <i class="fa-brands fa-x-twitter"></i> <span>Twitter</span>
         </a>
-      </button>
-      <button class="btn">
-        <a target="_blank" href="https://www.tiktok.com/@itsbadvibes/">
-          Tiktok
+        
+        <a target="_blank" href="https://www.tiktok.com/@itsbadvibes/" class="link-btn">
+          <i class="fa-brands fa-tiktok"></i>
+          <span>TikTok</span>
         </a>
-      </button>
+      </div>
 
+      <footer>
+        <p>&copy; 2025 Bad Vibes. All rights reserved.</p>
+      </footer>
     </div>
-    <div id="rest"></div>
   </main>
 
- <footer>
-    <p><b>&copy; </b>2023 Bad Vibes. All rights reserved.</p>
-  </footer>
-  
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      // Initialize Vanta
+      try {
+        VANTA.BIRDS({
+          el: "#vanta",
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          minHeight: 200.00,
+          minWidth: 200.00,
+          scale: 1.00,
+          scaleMobile: 1.00,
+          wingSpan: 40.00,
+          speedLimit: 5.00, // Slightly slower for elegance
+          separation: 80.00,
+          alignment: 45.00,
+          quantity: 3.00, // Increased quantity slightly
+          backgroundColor: 0x0f0f0f, // Dark background to match theme
+          color1: 0x4a4a4a, // Darker bird colors
+          color2: 0x888888,
+          backgroundAlpha: 1.0
+        });
+      } catch (e) {
+        console.log("Vanta failed to load", e);
+      }
+
+      // Fade in effect
+      setTimeout(() => {
+        document.querySelector('main').style.opacity = '1';
+      }, 500);
+    });
+  </script>
 </body>
-
-  
-
 </html>

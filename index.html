@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Bad Vibes Socials</title>
+  <title>Bad Vibes Socials - Universe Edition</title>
   <meta name="theme-color" content="#050505">
 
   <meta property="og:image" content="./img/profile.png">
@@ -16,28 +16,44 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 
   <style>
-    /* --- CSS Reset --- */
+    /* --- CSS Reset & Variables --- */
     :root {
-      --bg: #050505;
-      --card-bg: rgba(20, 20, 20, 0.8);
+      /* Deep Space BG Colors */
+      --bg-dark: #020204;
+      --bg-light: #111b2b;
+      
+      --card-bg: rgba(20, 20, 25, 0.75);
       --item-bg: rgba(255, 255, 255, 0.05);
-      --item-hover: rgba(255, 255, 255, 0.1);
-      --border: rgba(255, 255, 255, 0.08);
-      --accent: #3b82f6;
+      --item-hover: rgba(255, 255, 255, 0.12);
+      /* Cyan Accent for glow */
+      --accent-glow: rgba(0, 242, 234, 0.5);
+      --accent-border: rgba(0, 242, 234, 0.3);
+      --accent-blue: #3b82f6;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg);
+      /* Universe Background Gradient */
+      background: radial-gradient(ellipse at bottom, var(--bg-light) 0%, var(--bg-dark) 100%);
       color: #fff;
-      /* Grid is better for perfect centering + scrolling safety */
       display: grid;
       place-items: center;
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
+      background-attachment: fixed;
+    }
+
+    /* Subtle stars overlay */
+    body::before {
+        content: ""; position: fixed; inset: 0;
+        background-image: 
+            radial-gradient(white, rgba(255,255,255,.1) 1px, transparent 1px),
+            radial-gradient(white, rgba(255,255,255,.05) 1px, transparent 1px);
+        background-size: 250px 250px, 150px 150px;
+        opacity: 0.3; pointer-events: none;
     }
 
     /* --- Background Game Canvas --- */
@@ -45,7 +61,7 @@
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: 0;
-      pointer-events: auto; /* Allows clicking canvas */
+      pointer-events: auto;
     }
 
     /* --- Main Container --- */
@@ -53,56 +69,54 @@
       position: relative;
       z-index: 10;
       width: 100%;
-      /* Ensures padding on mobile */
       padding: 2rem 1rem; 
       display: flex;
       justify-content: center;
+      /* Ensure space for bottom buttons on mobile */
+      padding-bottom: 100px;
     }
 
-    /* --- The Card --- */
+    /* --- The Glowing Card --- */
     .profile-card {
       width: 100%;
-      max-width: 400px; /* Strict width control */
+      max-width: 400px;
       background: var(--card-bg);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
-      border: 1px solid var(--border);
       border-radius: 28px;
-      padding: 8px; /* Inner gap frame */
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      padding: 8px;
+      
+      /* OUTER GLOW EFFECT */
+      border: 1px solid var(--accent-border);
+      box-shadow: 
+        0 0 20px var(--accent-glow), /* Inner bloom */
+        0 0 60px rgba(0, 242, 234, 0.1), /* Outer halo */
+        0 30px 60px -12px rgba(0, 0, 0, 0.8); /* Deep shadow underneath */
       
       opacity: 0;
       transform: translateY(20px);
       animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    @keyframes fadeInUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); }}
 
     /* --- Header Section --- */
     .card-inner {
-      background: #111;
+      background: rgba(10, 10, 15, 0.6);
       border-radius: 20px;
       padding: 2rem;
       text-align: center;
       margin-bottom: 8px;
       position: relative;
       overflow: hidden;
-    }
-
-    /* Noise Texture Overlay */
-    .card-inner::after {
-        content: ""; position: absolute; inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-        opacity: 0.4; pointer-events: none;
+      border: 1px solid rgba(255,255,255,0.05);
     }
 
     .profile-img {
       width: 100px; height: 100px;
       border-radius: 50%;
-      border: 3px solid #1a1a1a;
-      box-shadow: 0 0 20px rgba(255,255,255,0.05);
+      border: 3px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 20px rgba(0, 242, 234, 0.2);
       object-fit: cover;
       margin-bottom: 1rem;
       position: relative; z-index: 2;
@@ -114,17 +128,11 @@
     }
 
     h1 { font-size: 1.4rem; font-weight: 700; color: #fff; }
-    .verified { color: var(--accent); font-size: 1rem; }
-    
-    .bio {
-      color: #888; font-size: 0.9rem; font-weight: 500; margin-top: 4px;
-      position: relative; z-index: 2;
-    }
+    .verified { color: var(--accent-blue); font-size: 1rem; }
+    .bio { color: #aaa; font-size: 0.9rem; font-weight: 500; margin-top: 4px; position: relative; z-index: 2; }
 
     /* --- Links Grid --- */
-    .links-stack {
-      display: flex; flex-direction: column; gap: 8px;
-    }
+    .links-stack { display: flex; flex-direction: column; gap: 8px; }
 
     .link-btn {
       display: flex; align-items: center; justify-content: space-between;
@@ -138,47 +146,63 @@
     }
 
     .left-content { display: flex; align-items: center; gap: 14px; }
-    
     .icon {
         width: 36px; height: 36px;
         background: rgba(255,255,255,0.08);
         border-radius: 10px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.1rem;
-        transition: 0.2s;
+        font-size: 1.1rem; transition: 0.2s;
     }
-
     .label { font-weight: 600; font-size: 0.95rem; }
     .arrow { color: #555; font-size: 0.8rem; transition: 0.2s; }
 
-    /* Hover Effects */
-    .link-btn:hover {
-        background: var(--item-hover);
-        transform: scale(1.02);
-        border-color: rgba(255,255,255,0.1);
-    }
+    .link-btn:hover { background: var(--item-hover); transform: scale(1.02); border-color: rgba(255,255,255,0.1); }
     .link-btn:hover .arrow { color: #fff; transform: translateX(3px); }
-    
-    /* Brand Colors (Icon fills on hover) */
     .link-btn:hover .icon.fb { background: #1877F2; }
     .link-btn:hover .icon.yt { background: #FF0000; }
     .link-btn:hover .icon.ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
     .link-btn:hover .icon.tw { background: #fff; color: #000; }
     .link-btn:hover .icon.tt { background: #00f2ea; color: #000; }
 
-    /* --- Floating Badge --- */
-    .interactive-badge {
-        position: fixed; bottom: 20px;
-        background: rgba(10,10,10,0.8);
-        border: 1px solid #333;
-        padding: 8px 16px;
-        border-radius: 50px;
-        font-size: 0.8rem; color: #888;
-        display: flex; align-items: center; gap: 8px;
-        backdrop-filter: blur(5px);
-        z-index: 5;
+    /* --- Bottom UI Elements --- */
+    .bottom-ui {
+        position: fixed; bottom: 30px; left: 0; width: 100%;
+        display: flex; justify-content: space-between;
+        padding: 0 30px; z-index: 20;
+        pointer-events: none; /* Let clicks pass through container */
     }
-    .key { background: #333; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;}
+
+    .hint-badge {
+        background: rgba(10,10,15,0.7);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 10px 16px; border-radius: 50px;
+        font-size: 0.8rem; color: #aaa;
+        display: flex; align-items: center; gap: 8px;
+        backdrop-filter: blur(10px);
+        pointer-events: auto;
+    }
+    .key { background: rgba(255,255,255,0.15); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;}
+
+    /* Respawn Button */
+    .spawn-btn {
+        pointer-events: auto;
+        background: linear-gradient(135deg, #00f2ea, #3b82f6);
+        border: none;
+        color: #000;
+        font-weight: 700;
+        padding: 12px 24px;
+        border-radius: 50px;
+        cursor: pointer;
+        display: flex; align-items: center; gap: 8px;
+        box-shadow: 0 0 20px rgba(0, 242, 234, 0.4);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .spawn-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 242, 234, 0.6); }
+    .spawn-btn:active { transform: scale(0.95); }
+
+    @media(max-width: 600px) {
+        .bottom-ui { flex-direction: column-reverse; align-items: center; gap: 20px; bottom: 20px;}
+    }
 
   </style>
 </head>
@@ -187,7 +211,7 @@
   <canvas id="game-canvas"></canvas>
 
   <main>
-    <div class="profile-card" data-tilt data-tilt-max="2" data-tilt-speed="400">
+    <div class="profile-card" data-tilt data-tilt-max="3" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.15">
       
       <div class="card-inner">
         <img src="./img/profile.png" alt="Profile" class="profile-img">
@@ -195,223 +219,214 @@
             <h1>Bad Vibes</h1>
             <i class="fa-solid fa-circle-check verified"></i>
         </div>
-        <p class="bio">Digital Creator • Social Hub</p>
+        <p class="bio">Seize the means of production</p>
       </div>
 
       <div class="links-stack">
-        <a href="https://www.facebook.com/badvibeph/" target="_blank" class="link-btn">
-          <div class="left-content">
-            <div class="icon fb"><i class="fa-brands fa-facebook-f"></i></div>
-            <span class="label">Facebook</span>
-          </div>
-          <i class="fa-solid fa-chevron-right arrow"></i>
-        </a>
-
-        <a href="https://www.youtube.com/badvibesph/" target="_blank" class="link-btn">
-          <div class="left-content">
-            <div class="icon yt"><i class="fa-brands fa-youtube"></i></div>
-            <span class="label">YouTube</span>
-          </div>
-          <i class="fa-solid fa-chevron-right arrow"></i>
-        </a>
-
-        <a href="https://www.instagram.com/badvibesph/" target="_blank" class="link-btn">
-          <div class="left-content">
-            <div class="icon ig"><i class="fa-brands fa-instagram"></i></div>
-            <span class="label">Instagram</span>
-          </div>
-          <i class="fa-solid fa-chevron-right arrow"></i>
-        </a>
-
-        <a href="https://twitter.com/itsbadvibesph/" target="_blank" class="link-btn">
-          <div class="left-content">
-            <div class="icon tw"><i class="fa-brands fa-x-twitter"></i></div>
-            <span class="label">Twitter / X</span>
-          </div>
-          <i class="fa-solid fa-chevron-right arrow"></i>
-        </a>
-
-        <a href="https://www.tiktok.com/@itsbadvibes/" target="_blank" class="link-btn">
-          <div class="left-content">
-            <div class="icon tt"><i class="fa-brands fa-tiktok"></i></div>
-            <span class="label">TikTok</span>
-          </div>
-          <i class="fa-solid fa-chevron-right arrow"></i>
-        </a>
+        <a href="https://www.facebook.com/badvibeph/" target="_blank" class="link-btn"><div class="left-content"><div class="icon fb"><i class="fa-brands fa-facebook-f"></i></div><span class="label">Facebook</span></div><i class="fa-solid fa-chevron-right arrow"></i></a>
+        <a href="https://www.youtube.com/badvibesph/" target="_blank" class="link-btn"><div class="left-content"><div class="icon yt"><i class="fa-brands fa-youtube"></i></div><span class="label">YouTube</span></div><i class="fa-solid fa-chevron-right arrow"></i></a>
+        <a href="https://www.instagram.com/badvibesph/" target="_blank" class="link-btn"><div class="left-content"><div class="icon ig"><i class="fa-brands fa-instagram"></i></div><span class="label">Instagram</span></div><i class="fa-solid fa-chevron-right arrow"></i></a>
+        <a href="https://twitter.com/itsbadvibesph/" target="_blank" class="link-btn"><div class="left-content"><div class="icon tw"><i class="fa-brands fa-x-twitter"></i></div><span class="label">Twitter / X</span></div><i class="fa-solid fa-chevron-right arrow"></i></a>
+        <a href="https://www.tiktok.com/@itsbadvibes/" target="_blank" class="link-btn"><div class="left-content"><div class="icon tt"><i class="fa-brands fa-tiktok"></i></div><span class="label">TikTok</span></div><i class="fa-solid fa-chevron-right arrow"></i></a>
       </div>
 
     </div>
   </main>
 
-  <div class="interactive-badge">
-    <span class="key">CLICK BG</span>
-    <span>to scare snakes</span>
+  <div class="bottom-ui">
+      <div class="hint-badge">
+        <span class="key">CLICK BG</span>
+        <span>to scare snakes</span>
+      </div>
+      <button class="spawn-btn" id="spawnBtn">
+        <i class="fa-solid fa-plus"></i> Spawn Snake
+      </button>
   </div>
 
   <script>
-    // --- 1. Tilt Initialization ---
     VanillaTilt.init(document.querySelector(".profile-card"));
 
-    // --- 2. Advanced Snake Engine ---
     const canvas = document.getElementById('game-canvas');
     const ctx = canvas.getContext('2d');
-    
-    let width, height;
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
+    let width, height, mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
     let isBoosting = false;
 
-    // Snake Config
-    const SNAKE_COUNT = 8;
-    const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ffffff'];
+    const SNAKE_COUNT = 6;
+    const FOOD_COUNT = 15; // Food is back!
+    const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'];
+    // Special color for user spawned snakes
+    const HERO_COLOR = '#00f2ea';
 
     function resize() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', resize);
-    resize();
+    window.addEventListener('resize', resize); resize();
 
     // Input Listeners
-    document.addEventListener('mousemove', e => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
+    document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
     document.addEventListener('mousedown', () => isBoosting = true);
     document.addEventListener('mouseup', () => isBoosting = false);
     document.addEventListener('touchstart', () => isBoosting = true);
     document.addEventListener('touchend', () => isBoosting = false);
 
-    // Shockwave Event
+    // Shockwave on BG click
     document.addEventListener('click', (e) => {
-        // Prevent triggering if clicking a link
-        if(e.target.closest('a')) return;
-        
-        createShockwave(e.clientX, e.clientY);
-    });
-
-    function createShockwave(x, y) {
+        if(e.target.closest('a, button')) return; // Don't trigger on links/buttons
         snakes.forEach(snake => {
             const head = snake.segments[0];
-            const dx = head.x - x;
-            const dy = head.y - y;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-            
-            // If snake is close to click, force it away instantly
+            const dist = Math.hypot(head.x - e.clientX, head.y - e.clientY);
             if(dist < 300) {
-                const angleAway = Math.atan2(dy, dx);
-                snake.targetAngle = angleAway;
-                snake.angle = angleAway; // Snap angle
-                snake.forceSpeed = 10; // Temp speed burst
+                snake.targetAngle = Math.atan2(head.y - e.clientY, head.x - e.clientX);
+                snake.forceSpeed = 12;
             }
         });
+    });
+
+    // Spawn Button Action
+    document.getElementById('spawnBtn').addEventListener('click', () => {
+        // Spawn a special "hero" snake at center screen
+        const heroSnake = new Snake(true);
+        heroSnake.segments.forEach(s => { s.x = width/2; s.y = height/2; });
+        snakes.push(heroSnake);
+    });
+
+
+    // --- FOOD CLASS (Re-added) ---
+    class Food {
+        constructor() { this.respawn(); }
+        respawn() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.size = 3 + Math.random()*2;
+            this.pulse = Math.random();
+        }
+        draw() {
+            this.pulse += 0.05;
+            const glowSize = 8 + Math.sin(this.pulse)*4;
+            ctx.shadowBlur = glowSize; ctx.shadowColor = 'white';
+            ctx.fillStyle = 'white';
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
+            ctx.shadowBlur = 0;
+        }
     }
 
     // --- SNAKE CLASS ---
     class Snake {
-      constructor() {
+      constructor(isHero = false) {
+        this.isHero = isHero; // Mark if spawned by user
         this.reset();
-        this.segments.forEach(s => { s.x = Math.random() * width; s.y = Math.random() * height; });
+        if(!isHero) {
+             this.segments.forEach(s => { s.x = Math.random() * width; s.y = Math.random() * height; });
+        }
       }
 
       reset() {
-        this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        this.color = this.isHero ? HERO_COLOR : COLORS[Math.floor(Math.random() * COLORS.length)];
         this.angle = Math.random() * Math.PI * 2;
         this.targetAngle = this.angle;
         this.baseSpeed = 2 + Math.random();
-        this.forceSpeed = 0; // For shockwaves
+        this.forceSpeed = 0;
         this.turnSpeed = 0.05;
-        this.radius = 5;
+        this.radius = this.isHero ? 7 : 5; // Hero is slightly bigger
         this.length = 25 + Math.floor(Math.random() * 20);
         this.segments = [];
         for(let i=0; i<this.length; i++) { this.segments.push({x:0, y:0}); }
       }
 
-      update() {
-        // 1. AI Logic
+      grow() { this.length += 10; }
+
+      update(foodArray) {
+        const head = this.segments[0];
+
+        // 1. AI Logic Priority: Shockwave -> Food -> Wandering
         if (this.forceSpeed > 0) {
-            // Decelerate from shockwave
-            this.forceSpeed *= 0.95;
-            if(this.forceSpeed < 0.1) this.forceSpeed = 0;
+            this.forceSpeed *= 0.95; if(this.forceSpeed < 0.1) this.forceSpeed = 0;
         } else {
-            // Normal Wandering
-            this.targetAngle += (Math.random() - 0.5) * 0.3;
+            // Find nearest food
+            let nearestFood = null;
+            let minDistance = 9999;
+            foodArray.forEach(f => {
+                const d = Math.hypot(head.x - f.x, head.y - f.y);
+                if(d < minDistance) { minDistance = d; nearestFood = f; }
+            });
+
+            // Seek food if close enough (e.g., 250px)
+            if(nearestFood && minDistance < 250) {
+                 this.targetAngle = Math.atan2(nearestFood.y - head.y, nearestFood.x - head.x);
+            } else {
+                 // Wander randomly
+                 this.targetAngle += (Math.random() - 0.5) * 0.3;
+            }
         }
 
-        // 2. Rotation
+        // Rotation smoothing
         let diff = this.targetAngle - this.angle;
         while (diff < -Math.PI) diff += Math.PI * 2;
         while (diff > Math.PI) diff -= Math.PI * 2;
         this.angle += diff * this.turnSpeed;
 
-        // 3. Movement
+        // Movement
         let currentSpeed = (isBoosting ? this.baseSpeed * 2.5 : this.baseSpeed) + this.forceSpeed;
-        
-        let vx = Math.cos(this.angle) * currentSpeed;
-        let vy = Math.sin(this.angle) * currentSpeed;
+        let nextX = head.x + Math.cos(this.angle) * currentSpeed;
+        let nextY = head.y + Math.sin(this.angle) * currentSpeed;
 
-        let nextX = this.segments[0].x + vx;
-        let nextY = this.segments[0].y + vy;
-
-        // 4. Wrap Screen
+        // Wrap Screen
         if (nextX < 0) nextX = width; if (nextX > width) nextX = 0;
         if (nextY < 0) nextY = height; if (nextY > height) nextY = 0;
 
         this.segments.unshift({x: nextX, y: nextY});
+
+        // Eat Food Check
+        foodArray.forEach(f => {
+            if(Math.hypot(head.x - f.x, head.y - f.y) < this.radius + f.size + 5) {
+                f.respawn(); this.grow();
+            }
+        });
+
         if (this.segments.length > this.length) this.segments.pop();
       }
 
       draw() {
         ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = this.radius * 2;
-        ctx.shadowBlur = 10; ctx.shadowColor = this.color; ctx.strokeStyle = this.color;
+        // Hero snake gets extra glow
+        ctx.shadowBlur = this.isHero ? 25 : 15; 
+        ctx.shadowColor = this.color; ctx.strokeStyle = this.color;
 
         ctx.beginPath();
         if(this.segments.length > 0) ctx.moveTo(this.segments[0].x, this.segments[0].y);
         
         for (let i = 1; i < this.segments.length; i++) {
           const curr = this.segments[i]; const prev = this.segments[i-1];
-          // Fix wrapping glitches
           if (Math.abs(curr.x - prev.x) + Math.abs(curr.y - prev.y) > 100) {
             ctx.stroke(); ctx.beginPath(); ctx.moveTo(curr.x, curr.y);
           } else { ctx.lineTo(curr.x, curr.y); }
         }
         ctx.stroke(); 
         
-        // --- EYES (Interactive!) ---
-        ctx.shadowBlur = 0;
-        const head = this.segments[0];
-        
-        // Calculate angle to mouse for eyes
-        const dx = mouseX - head.x;
-        const dy = mouseY - head.y;
+        // Interactive Eyes
+        ctx.shadowBlur = 0; const head = this.segments[0];
+        const dx = mouseX - head.x; const dy = mouseY - head.y;
         let eyeAngle = Math.atan2(dy, dx);
         
-        // If mouse is too far or wrapping, default to head direction
-        // if(Math.sqrt(dx*dx + dy*dy) > 400) eyeAngle = this.angle; 
-
-        // Draw Eye Whites
         ctx.fillStyle = 'white';
-        const leftEyeX = head.x + Math.cos(this.angle - 0.7) * (this.radius * 0.8);
-        const leftEyeY = head.y + Math.sin(this.angle - 0.7) * (this.radius * 0.8);
-        const rightEyeX = head.x + Math.cos(this.angle + 0.7) * (this.radius * 0.8);
-        const rightEyeY = head.y + Math.sin(this.angle + 0.7) * (this.radius * 0.8);
-
-        ctx.beginPath(); ctx.arc(leftEyeX, leftEyeY, 3, 0, Math.PI*2); ctx.fill();
-        ctx.beginPath(); ctx.arc(rightEyeX, rightEyeY, 3, 0, Math.PI*2); ctx.fill();
-
-        // Draw Pupils (Look at mouse)
+        const lx = head.x + Math.cos(this.angle-0.7)*(this.radius*0.8); const ly = head.y + Math.sin(this.angle-0.7)*(this.radius*0.8);
+        const rx = head.x + Math.cos(this.angle+0.7)*(this.radius*0.8); const ry = head.y + Math.sin(this.angle+0.7)*(this.radius*0.8);
+        ctx.beginPath(); ctx.arc(lx, ly, this.radius*0.5, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(rx, ry, this.radius*0.5, 0, Math.PI*2); ctx.fill();
         ctx.fillStyle = 'black';
-        ctx.beginPath(); ctx.arc(leftEyeX + Math.cos(eyeAngle)*1, leftEyeY + Math.sin(eyeAngle)*1, 1.5, 0, Math.PI*2); ctx.fill();
-        ctx.beginPath(); ctx.arc(rightEyeX + Math.cos(eyeAngle)*1, rightEyeY + Math.sin(eyeAngle)*1, 1.5, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(lx + Math.cos(eyeAngle)*2, ly + Math.sin(eyeAngle)*2, this.radius*0.25, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(rx + Math.cos(eyeAngle)*2, ry + Math.sin(eyeAngle)*2, this.radius*0.25, 0, Math.PI*2); ctx.fill();
       }
     }
 
     const snakes = Array.from({length: SNAKE_COUNT}, () => new Snake());
+    const foods = Array.from({length: FOOD_COUNT}, () => new Food());
 
     function animate() {
       ctx.clearRect(0, 0, width, height);
-      snakes.forEach(s => { s.update(); s.draw(); });
+      foods.forEach(f => f.draw());
+      snakes.forEach(s => { s.update(foods); s.draw(); });
       requestAnimationFrame(animate);
     }
     animate();

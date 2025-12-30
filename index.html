@@ -18,14 +18,11 @@
   <style>
     /* --- CSS Reset & Variables --- */
     :root {
-      /* Deep Space BG Colors */
       --bg-dark: #020204;
       --bg-light: #111b2b;
-      
       --card-bg: rgba(20, 20, 25, 0.75);
       --item-bg: rgba(255, 255, 255, 0.05);
       --item-hover: rgba(255, 255, 255, 0.12);
-      /* Cyan Accent for glow */
       --accent-glow: rgba(0, 242, 234, 0.5);
       --accent-border: rgba(0, 242, 234, 0.3);
       --accent-blue: #3b82f6;
@@ -35,7 +32,6 @@
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      /* Universe Background Gradient */
       background: radial-gradient(ellipse at bottom, var(--bg-light) 0%, var(--bg-dark) 100%);
       color: #fff;
       display: grid;
@@ -44,9 +40,10 @@
       overflow-x: hidden;
       position: relative;
       background-attachment: fixed;
+      cursor: crosshair; /* Indicates interactive background */
     }
 
-    /* Subtle stars overlay */
+    /* Stars Overlay */
     body::before {
         content: ""; position: fixed; inset: 0;
         background-image: 
@@ -56,101 +53,67 @@
         opacity: 0.3; pointer-events: none;
     }
 
-    /* --- Background Game Canvas --- */
     canvas#game-canvas {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 0;
-      pointer-events: auto;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: auto;
     }
 
-    /* --- Main Container --- */
     main {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      padding: 2rem 1rem; 
-      display: flex;
-      justify-content: center;
-      /* Ensure space for bottom buttons on mobile */
+      position: relative; z-index: 10; width: 100%;
+      padding: 2rem 1rem; display: flex; justify-content: center;
       padding-bottom: 100px;
     }
 
-    /* --- The Glowing Card --- */
+    /* --- Glowing Profile Card --- */
     .profile-card {
-      width: 100%;
-      max-width: 400px;
+      width: 100%; max-width: 400px;
       background: var(--card-bg);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border-radius: 28px;
-      padding: 8px;
-      
-      /* OUTER GLOW EFFECT */
+      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      border-radius: 28px; padding: 8px;
       border: 1px solid var(--accent-border);
       box-shadow: 
-        0 0 20px var(--accent-glow), /* Inner bloom */
-        0 0 60px rgba(0, 242, 234, 0.1), /* Outer halo */
-        0 30px 60px -12px rgba(0, 0, 0, 0.8); /* Deep shadow underneath */
-      
-      opacity: 0;
-      transform: translateY(20px);
+        0 0 20px var(--accent-glow), 
+        0 0 60px rgba(0, 242, 234, 0.1), 
+        0 30px 60px -12px rgba(0, 0, 0, 0.8);
+      opacity: 0; transform: translateY(20px);
       animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); }}
 
-    /* --- Header Section --- */
     .card-inner {
       background: rgba(10, 10, 15, 0.6);
-      border-radius: 20px;
-      padding: 2rem;
-      text-align: center;
-      margin-bottom: 8px;
-      position: relative;
-      overflow: hidden;
+      border-radius: 20px; padding: 2rem; text-align: center;
+      margin-bottom: 8px; position: relative; overflow: hidden;
       border: 1px solid rgba(255,255,255,0.05);
     }
 
     .profile-img {
-      width: 100px; height: 100px;
-      border-radius: 50%;
+      width: 100px; height: 100px; border-radius: 50%;
       border: 3px solid rgba(255,255,255,0.1);
       box-shadow: 0 0 20px rgba(0, 242, 234, 0.2);
-      object-fit: cover;
-      margin-bottom: 1rem;
-      position: relative; z-index: 2;
+      object-fit: cover; margin-bottom: 1rem; position: relative; z-index: 2;
     }
 
-    .name-row {
-        display: flex; align-items: center; justify-content: center; gap: 6px;
-        position: relative; z-index: 2;
-    }
-
+    .name-row { display: flex; align-items: center; justify-content: center; gap: 6px; position: relative; z-index: 2; }
     h1 { font-size: 1.4rem; font-weight: 700; color: #fff; }
     .verified { color: var(--accent-blue); font-size: 1rem; }
     .bio { color: #aaa; font-size: 0.9rem; font-weight: 500; margin-top: 4px; position: relative; z-index: 2; }
 
-    /* --- Links Grid --- */
+    /* --- Links --- */
     .links-stack { display: flex; flex-direction: column; gap: 8px; }
 
     .link-btn {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 20px;
-      background: var(--item-bg);
-      border-radius: 16px;
-      text-decoration: none;
-      color: #fff;
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
+      padding: 14px 20px; background: var(--item-bg);
+      border-radius: 16px; text-decoration: none; color: #fff;
+      transition: all 0.2s ease; border: 1px solid transparent;
     }
 
     .left-content { display: flex; align-items: center; gap: 14px; }
     .icon {
-        width: 36px; height: 36px;
-        background: rgba(255,255,255,0.08);
-        border-radius: 10px;
-        display: flex; align-items: center; justify-content: center;
+        width: 36px; height: 36px; background: rgba(255,255,255,0.08);
+        border-radius: 10px; display: flex; align-items: center; justify-content: center;
         font-size: 1.1rem; transition: 0.2s;
     }
     .label { font-weight: 600; font-size: 0.95rem; }
@@ -164,12 +127,11 @@
     .link-btn:hover .icon.tw { background: #fff; color: #000; }
     .link-btn:hover .icon.tt { background: #00f2ea; color: #000; }
 
-    /* --- Bottom UI Elements --- */
+    /* --- Bottom UI --- */
     .bottom-ui {
         position: fixed; bottom: 30px; left: 0; width: 100%;
         display: flex; justify-content: space-between;
-        padding: 0 30px; z-index: 20;
-        pointer-events: none; /* Let clicks pass through container */
+        padding: 0 30px; z-index: 20; pointer-events: none;
     }
 
     .hint-badge {
@@ -178,22 +140,16 @@
         padding: 10px 16px; border-radius: 50px;
         font-size: 0.8rem; color: #aaa;
         display: flex; align-items: center; gap: 8px;
-        backdrop-filter: blur(10px);
-        pointer-events: auto;
+        backdrop-filter: blur(10px); pointer-events: auto;
     }
     .key { background: rgba(255,255,255,0.15); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;}
 
-    /* Respawn Button */
     .spawn-btn {
         pointer-events: auto;
         background: linear-gradient(135deg, #00f2ea, #3b82f6);
-        border: none;
-        color: #000;
-        font-weight: 700;
-        padding: 12px 24px;
-        border-radius: 50px;
-        cursor: pointer;
-        display: flex; align-items: center; gap: 8px;
+        border: none; color: #000; font-weight: 700;
+        padding: 12px 24px; border-radius: 50px;
+        cursor: pointer; display: flex; align-items: center; gap: 8px;
         box-shadow: 0 0 20px rgba(0, 242, 234, 0.4);
         transition: transform 0.2s, box-shadow 0.2s;
     }
@@ -203,7 +159,6 @@
     @media(max-width: 600px) {
         .bottom-ui { flex-direction: column-reverse; align-items: center; gap: 20px; bottom: 20px;}
     }
-
   </style>
 </head>
 <body>
@@ -212,14 +167,13 @@
 
   <main>
     <div class="profile-card" data-tilt data-tilt-max="3" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.15">
-      
       <div class="card-inner">
         <img src="./img/profile.png" alt="Profile" class="profile-img">
         <div class="name-row">
             <h1>Bad Vibes</h1>
             <i class="fa-solid fa-circle-check verified"></i>
         </div>
-        <p class="bio">Seize the means of production</p>
+        <p class="bio">Digital Creator</p>
       </div>
 
       <div class="links-stack">
@@ -229,17 +183,16 @@
         <a href="https://twitter.com/itsbadvibesph/" target="_blank" class="link-btn"><div class="left-content"><div class="icon tw"><i class="fa-brands fa-x-twitter"></i></div><span class="label">Twitter / X</span></div><i class="fa-solid fa-chevron-right arrow"></i></a>
         <a href="https://www.tiktok.com/@itsbadvibes/" target="_blank" class="link-btn"><div class="left-content"><div class="icon tt"><i class="fa-brands fa-tiktok"></i></div><span class="label">TikTok</span></div><i class="fa-solid fa-chevron-right arrow"></i></a>
       </div>
-
     </div>
   </main>
 
   <div class="bottom-ui">
       <div class="hint-badge">
-        <span class="key">CLICK BG</span>
-        <span>to scare snakes</span>
+        <span class="key">HOLD</span>
+        <span>to Boost Speed</span>
       </div>
       <button class="spawn-btn" id="spawnBtn">
-        <i class="fa-solid fa-plus"></i> Spawn Snake
+        <i class="fa-solid fa-gamepad"></i> Play Snake
       </button>
   </div>
 
@@ -248,14 +201,16 @@
 
     const canvas = document.getElementById('game-canvas');
     const ctx = canvas.getContext('2d');
+    
+    // Global State
     let width, height, mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
     let isBoosting = false;
+    let playerSnake = null; // Track the single player snake
 
-    const SNAKE_COUNT = 6;
-    const FOOD_COUNT = 15; // Food is back!
+    const SNAKE_COUNT = 5;
+    const FOOD_COUNT = 15;
     const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'];
-    // Special color for user spawned snakes
-    const HERO_COLOR = '#00f2ea';
+    const PLAYER_COLOR = '#00f2ea'; // Cyan for player
 
     function resize() {
       width = canvas.width = window.innerWidth;
@@ -263,36 +218,47 @@
     }
     window.addEventListener('resize', resize); resize();
 
-    // Input Listeners
+    // Input Handling
     document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+    
+    // Boost Logic
     document.addEventListener('mousedown', () => isBoosting = true);
     document.addEventListener('mouseup', () => isBoosting = false);
     document.addEventListener('touchstart', () => isBoosting = true);
     document.addEventListener('touchend', () => isBoosting = false);
 
-    // Shockwave on BG click
+    // Shockwave (Only scares AI)
     document.addEventListener('click', (e) => {
-        if(e.target.closest('a, button')) return; // Don't trigger on links/buttons
+        if(e.target.closest('a, button')) return;
         snakes.forEach(snake => {
-            const head = snake.segments[0];
-            const dist = Math.hypot(head.x - e.clientX, head.y - e.clientY);
-            if(dist < 300) {
-                snake.targetAngle = Math.atan2(head.y - e.clientY, head.x - e.clientX);
-                snake.forceSpeed = 12;
+            if(!snake.isPlayer) { // Only scare AI snakes
+                const head = snake.segments[0];
+                const dist = Math.hypot(head.x - e.clientX, head.y - e.clientY);
+                if(dist < 300) {
+                    snake.targetAngle = Math.atan2(head.y - e.clientY, head.x - e.clientX);
+                    snake.forceSpeed = 12;
+                }
             }
         });
     });
 
-    // Spawn Button Action
+    // Spawn / Respawn Player Snake
     document.getElementById('spawnBtn').addEventListener('click', () => {
-        // Spawn a special "hero" snake at center screen
-        const heroSnake = new Snake(true);
-        heroSnake.segments.forEach(s => { s.x = width/2; s.y = height/2; });
-        snakes.push(heroSnake);
+        if (playerSnake) {
+            // Respawn existing snake to center
+            playerSnake.reset();
+            playerSnake.segments.forEach(s => { s.x = width/2; s.y = height/2; });
+        } else {
+            // Create new player snake
+            playerSnake = new Snake(true);
+            // Center spawn
+            playerSnake.segments.forEach(s => { s.x = width/2; s.y = height/2; });
+            snakes.push(playerSnake);
+        }
     });
 
+    // --- CLASSES ---
 
-    // --- FOOD CLASS (Re-added) ---
     class Food {
         constructor() { this.respawn(); }
         respawn() {
@@ -311,25 +277,25 @@
         }
     }
 
-    // --- SNAKE CLASS ---
     class Snake {
-      constructor(isHero = false) {
-        this.isHero = isHero; // Mark if spawned by user
+      constructor(isPlayer = false) {
+        this.isPlayer = isPlayer;
         this.reset();
-        if(!isHero) {
+        // AI random spawn positions
+        if(!isPlayer) {
              this.segments.forEach(s => { s.x = Math.random() * width; s.y = Math.random() * height; });
         }
       }
 
       reset() {
-        this.color = this.isHero ? HERO_COLOR : COLORS[Math.floor(Math.random() * COLORS.length)];
+        this.color = this.isPlayer ? PLAYER_COLOR : COLORS[Math.floor(Math.random() * COLORS.length)];
         this.angle = Math.random() * Math.PI * 2;
         this.targetAngle = this.angle;
-        this.baseSpeed = 2 + Math.random();
+        this.baseSpeed = this.isPlayer ? 3 : (2 + Math.random());
         this.forceSpeed = 0;
-        this.turnSpeed = 0.05;
-        this.radius = this.isHero ? 7 : 5; // Hero is slightly bigger
-        this.length = 25 + Math.floor(Math.random() * 20);
+        this.turnSpeed = 0.08;
+        this.radius = this.isPlayer ? 8 : 5;
+        this.length = 30 + Math.floor(Math.random() * 20);
         this.segments = [];
         for(let i=0; i<this.length; i++) { this.segments.push({x:0, y:0}); }
       }
@@ -339,35 +305,47 @@
       update(foodArray) {
         const head = this.segments[0];
 
-        // 1. AI Logic Priority: Shockwave -> Food -> Wandering
-        if (this.forceSpeed > 0) {
-            this.forceSpeed *= 0.95; if(this.forceSpeed < 0.1) this.forceSpeed = 0;
+        // --- MOVEMENT LOGIC ---
+        if (this.isPlayer) {
+            // PLAYER: Follow Mouse
+            const dx = mouseX - head.x;
+            const dy = mouseY - head.y;
+            this.targetAngle = Math.atan2(dy, dx);
+            
         } else {
-            // Find nearest food
-            let nearestFood = null;
-            let minDistance = 9999;
-            foodArray.forEach(f => {
-                const d = Math.hypot(head.x - f.x, head.y - f.y);
-                if(d < minDistance) { minDistance = d; nearestFood = f; }
-            });
-
-            // Seek food if close enough (e.g., 250px)
-            if(nearestFood && minDistance < 250) {
-                 this.targetAngle = Math.atan2(nearestFood.y - head.y, nearestFood.x - head.x);
+            // AI: Scared or Hungry
+            if (this.forceSpeed > 0) {
+                this.forceSpeed *= 0.95; if(this.forceSpeed < 0.1) this.forceSpeed = 0;
             } else {
-                 // Wander randomly
-                 this.targetAngle += (Math.random() - 0.5) * 0.3;
+                // Seek nearest food
+                let nearest = null; let minDst = 9999;
+                foodArray.forEach(f => {
+                    const d = Math.hypot(head.x - f.x, head.y - f.y);
+                    if(d < minDst) { minDst = d; nearest = f; }
+                });
+
+                if(nearest && minDst < 250) {
+                     this.targetAngle = Math.atan2(nearest.y - head.y, nearest.x - head.x);
+                } else {
+                     this.targetAngle += (Math.random() - 0.5) * 0.3; // Wander
+                }
             }
         }
 
-        // Rotation smoothing
+        // Smooth Rotation
         let diff = this.targetAngle - this.angle;
         while (diff < -Math.PI) diff += Math.PI * 2;
         while (diff > Math.PI) diff -= Math.PI * 2;
         this.angle += diff * this.turnSpeed;
 
-        // Movement
-        let currentSpeed = (isBoosting ? this.baseSpeed * 2.5 : this.baseSpeed) + this.forceSpeed;
+        // Apply Speed
+        // Boost applies to everyone if mouse is held (global chaos) or just player? 
+        // Let's make boost affect everyone for fun, or just player. 
+        // Logic: if isPlayer, use isBoosting flag. If AI, only boost if scared.
+        let boostMultiplier = (this.isPlayer && isBoosting) ? 2.5 : 1;
+        
+        let currentSpeed = (this.baseSpeed * boostMultiplier) + this.forceSpeed;
+        
         let nextX = head.x + Math.cos(this.angle) * currentSpeed;
         let nextY = head.y + Math.sin(this.angle) * currentSpeed;
 
@@ -377,7 +355,7 @@
 
         this.segments.unshift({x: nextX, y: nextY});
 
-        // Eat Food Check
+        // Eat Food
         foodArray.forEach(f => {
             if(Math.hypot(head.x - f.x, head.y - f.y) < this.radius + f.size + 5) {
                 f.respawn(); this.grow();
@@ -389,8 +367,8 @@
 
       draw() {
         ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = this.radius * 2;
-        // Hero snake gets extra glow
-        ctx.shadowBlur = this.isHero ? 25 : 15; 
+        // Stronger glow for player
+        ctx.shadowBlur = this.isPlayer ? 30 : 15; 
         ctx.shadowColor = this.color; ctx.strokeStyle = this.color;
 
         ctx.beginPath();
@@ -404,10 +382,10 @@
         }
         ctx.stroke(); 
         
-        // Interactive Eyes
+        // Eyes
         ctx.shadowBlur = 0; const head = this.segments[0];
-        const dx = mouseX - head.x; const dy = mouseY - head.y;
-        let eyeAngle = Math.atan2(dy, dx);
+        // Player eyes always look at mouse (targetAngle). AI eyes look forward.
+        let eyeAngle = this.targetAngle; 
         
         ctx.fillStyle = 'white';
         const lx = head.x + Math.cos(this.angle-0.7)*(this.radius*0.8); const ly = head.y + Math.sin(this.angle-0.7)*(this.radius*0.8);
@@ -420,6 +398,7 @@
       }
     }
 
+    // Init Logic
     const snakes = Array.from({length: SNAKE_COUNT}, () => new Snake());
     const foods = Array.from({length: FOOD_COUNT}, () => new Food());
 

@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Bad Vibes Socials</title>
+  <title>Bad Vibes Socials - Interactive Hub</title>
   <meta name="theme-color" content="#000000">
 
   <meta property="og:image" content="./img/profile.png">
   <link rel="icon" type="image/x-icon" href="./img/icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
@@ -18,24 +18,38 @@
   <style>
     /* --- CSS Reset & Variables --- */
     :root {
-      --bg: #050505;
-      --card-bg: rgba(20, 20, 20, 0.65); /* Darker, more opaque glass */
-      --card-border: rgba(255, 255, 255, 0.1);
-      --highlight: #ffffff;
-      --accent: #00f2ea;
+      --bg: #030303;
+      /* Cyber-Glass Theme Colors */
+      --glass-bg: rgba(20, 20, 25, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.6);
+      --accent-cyan: #00f2ea;
+      --accent-pink: #ff0050;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     body {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Inter', sans-serif;
       background-color: var(--bg);
-      color: #fff;
+      color: var(--text-primary);
       height: 100vh;
       overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
+    }
+
+    /* Mouse Spotlight Effect on Background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 242, 234, 0.07), transparent 40%);
+        z-index: 1;
+        pointer-events: none;
     }
 
     /* --- Background Canvas --- */
@@ -44,14 +58,15 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: 0;
-      /* Subtle grid pattern overlay */
+      /* futuristic grid */
       background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      background-position: center center;
     }
 
-    /* --- Layout & Card --- */
+    /* --- Main Layout & Card --- */
     main {
       position: relative;
       z-index: 10;
@@ -61,161 +76,140 @@
       justify-content: center;
     }
 
-    .glass-card {
+    .cyber-card {
       width: 100%;
-      max-width: 400px;
-      background: var(--card-bg);
-      backdrop-filter: blur(20px) saturate(120%);
-      -webkit-backdrop-filter: blur(20px) saturate(120%);
-      border: 1px solid var(--card-border);
+      max-width: 440px;
+      /* Advanced Glassmorphism */
+      background: var(--glass-bg);
+      box-shadow: 
+        0 20px 40px rgba(0,0,0,0.6),
+        inset 0 0 0 1px var(--glass-border); /* Inner subtle border */
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
       border-radius: 24px;
-      padding: 3rem 2rem;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      padding: 2.5rem;
       
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+
       opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      transform: translateY(30px) scale(0.95);
+      animation: cardEntrance 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
-    @keyframes fadeInUp {
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes cardEntrance {
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* --- Profile --- */
-    .profile-container {
-      position: relative;
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 1.5rem;
+    /* --- Profile Section (Bento Style Header) --- */
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        text-align: left;
+    }
+
+    .profile-img-container {
+        position: relative;
+        width: 90px; height: 90px;
+        flex-shrink: 0;
     }
 
     .profile-img {
       width: 100%; height: 100%;
-      border-radius: 50%;
+      border-radius: 20px; /* Soft square shape */
       object-fit: cover;
-      border: 3px solid rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.1);
+      z-index: 2; position: relative;
+    }
+    
+    /* Animated border glow */
+    .profile-img-container::after {
+        content: ''; position: absolute; inset: -4px;
+        background: linear-gradient(45deg, var(--accent-cyan), var(--accent-pink));
+        border-radius: 24px; z-index: 1; opacity: 0.6; filter: blur(8px);
+        animation: pulseGlow 4s ease-in-out infinite alternate;
+    }
+    @keyframes pulseGlow { 0% { opacity: 0.4; filter: blur(8px); } 100% { opacity: 0.8; filter: blur(12px); }}
+
+    .profile-info h1 {
+      font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;
+      background: linear-gradient(to right, #fff, #a0a0a0);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .profile-info .bio { color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; margin-top: 4px;}
+
+
+    /* --- Modern Interactive Links --- */
+    .links-container { display: flex; flex-direction: column; gap: 12px; }
+
+    .cyber-btn {
       position: relative;
-      z-index: 2;
-    }
-
-    /* Glowing Ring behind profile */
-    .ring {
-      position: absolute;
-      top: -5px; left: -5px; right: -5px; bottom: -5px;
-      border-radius: 50%;
-      background: linear-gradient(45deg, #ff0050, #00f2ea, #1877F2);
-      z-index: 1;
-      animation: spin 3s linear infinite;
-      filter: blur(10px);
-      opacity: 0.7;
-    }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-
-    h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: -1px;
-      margin-bottom: 0.25rem;
-      background: linear-gradient(to right, #fff, #999);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    p.role {
-      color: rgba(255,255,255,0.5);
-      font-size: 0.9rem;
-      margin-bottom: 2.5rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-weight: 500;
-    }
-
-    /* --- Modern Link Buttons --- */
-    .links {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .btn {
-      position: relative;
-      display: flex;
-      align-items: center;
-      padding: 18px 24px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 16px;
-      text-decoration: none;
-      color: #fff;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      display: flex; align-items: center;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      text-decoration: none; color: var(--text-primary);
+      font-weight: 600; font-size: 1rem;
       overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    .btn i {
-      font-size: 1.4rem;
-      width: 30px;
-      text-align: center;
-      margin-right: 15px;
-      transition: transform 0.3s;
-    }
+    .cyber-btn i { font-size: 1.2rem; width: 32px; margin-right: 12px; transition: transform 0.3s; color: var(--text-secondary);}
+    .cyber-btn span { position: relative; z-index: 2; }
 
-    .btn span {
-      position: relative;
-      z-index: 2;
+    /* Shimmer Effect created with ::before pseudo-element */
+    .cyber-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 200%; height: 100%;
+      background: linear-gradient(
+        110deg, 
+        transparent 30%, 
+        rgba(255, 255, 255, 0.1) 45%, 
+        rgba(255, 255, 255, 0.2) 50%, 
+        rgba(255, 255, 255, 0.1) 55%, 
+        transparent 70%
+      );
+      transform: skewX(-20deg);
+      transition: left 0.5s;
+      z-index: 1; pointer-events: none;
     }
 
     /* Hover States */
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; width: 0%; height: 100%;
-      background: rgba(255,255,255,0.1);
-      transition: width 0.3s ease;
-      z-index: 1;
+    .cyber-btn:hover {
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.05);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5);
     }
+    .cyber-btn:hover::before { left: 100%; /* Triggers shimmer animation */ }
+    .cyber-btn:hover i { transform: scale(1.1) translateZ(0); color: var(--text-primary); }
 
-    .btn:hover::before { width: 100%; }
-    .btn:hover { 
-      transform: translateX(5px); 
-      border-color: rgba(255,255,255,0.3);
-      box-shadow: 0 0 20px rgba(255,255,255,0.05);
-    }
-    .btn:hover i { transform: scale(1.2); }
+    /* Brand Colors on Hover */
+    .fb:hover { border-color: #1877F2; box-shadow: 0 10px 25px -10px rgba(24,119,242,0.4); }
+    .yt:hover { border-color: #FF0000; box-shadow: 0 10px 25px -10px rgba(255,0,0,0.4); }
+    .ig:hover { border-color: #E1306C; box-shadow: 0 10px 25px -10px rgba(225,48,108,0.4); }
+    .tw:hover { border-color: #ffffff; box-shadow: 0 10px 25px -10px rgba(255,255,255,0.3); }
+    .tt:hover { border-color: #00f2ea; box-shadow: 0 10px 25px -10px rgba(0,242,234,0.4); }
 
-    /* Specific Brand Accents on Hover */
-    .fb:hover { border-color: #1877F2; box-shadow: 0 0 15px rgba(24,119,242,0.2); }
-    .yt:hover { border-color: #FF0000; box-shadow: 0 0 15px rgba(255,0,0,0.2); }
-    .ig:hover { border-color: #E1306C; box-shadow: 0 0 15px rgba(225,48,108,0.2); }
-    .tt:hover { border-color: #00f2ea; box-shadow: 0 0 15px rgba(0,242,234,0.2); }
 
-    /* --- Floating Badge --- */
-    .status-badge {
-      position: fixed;
-      bottom: 30px; right: 30px;
-      background: rgba(0,0,0,0.8);
-      border: 1px solid #333;
-      padding: 10px 20px;
-      border-radius: 50px;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      z-index: 20;
+    /* --- Stats Counter (Food Eaten) --- */
+    .stats-container {
+        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+        background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border);
+        backdrop-filter: blur(10px); padding: 8px 16px; border-radius: 30px;
+        font-size: 0.9rem; font-weight: 600; color: var(--text-secondary);
+        display: flex; align-items: center; gap: 8px; z-index: 20;
     }
-    .dot {
-      width: 8px; height: 8px;
-      background: #00ff00;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #00ff00;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse { 50% { opacity: 0.5; } }
+    .orb-icon { width: 12px; height: 12px; background: var(--accent-cyan); border-radius: 50%; box-shadow: 0 0 8px var(--accent-cyan);}
 
     @media(max-width: 480px) {
-      .glass-card { padding: 2rem 1.5rem; }
-      h1 { font-size: 1.75rem; }
+      .cyber-card { padding: 1.5rem; gap: 1.5rem; }
+      .profile-img-container { width: 70px; height: 70px; }
+      .profile-info h1 { font-size: 1.4rem; }
     }
   </style>
 </head>
@@ -224,30 +218,32 @@
   <canvas id="game-canvas"></canvas>
 
   <main>
-    <div class="glass-card" data-tilt data-tilt-max="3" data-tilt-glare data-tilt-max-glare="0.1">
+    <div class="cyber-card" data-tilt data-tilt-max="2" data-tilt-glare data-tilt-max-glare="0.05">
       
-      <div class="profile-container">
-        <div class="ring"></div>
-        <img src="./img/profile.png" alt="Profile" class="profile-img">
-      </div>
+      <header class="profile-header">
+          <div class="profile-img-container">
+            <img src="./img/profile.png" alt="Profile" class="profile-img">
+          </div>
+          <div class="profile-info">
+              <h1>Bad Vibes</h1>
+              <p class="bio">Digital Creator & Social Hub</p>
+          </div>
+      </header>
 
-      <h1>Bad Vibes</h1>
-      <p class="role">Digital Creator</p>
-
-      <div class="links">
-        <a href="https://www.facebook.com/badvibeph/" target="_blank" class="btn fb">
+      <div class="links-container">
+        <a href="https://www.facebook.com/badvibeph/" target="_blank" class="cyber-btn fb">
           <i class="fa-brands fa-facebook-f"></i> <span>Facebook</span>
         </a>
-        <a href="https://www.youtube.com/badvibesph/" target="_blank" class="btn yt">
+        <a href="https://www.youtube.com/badvibesph/" target="_blank" class="cyber-btn yt">
           <i class="fa-brands fa-youtube"></i> <span>YouTube</span>
         </a>
-        <a href="https://www.instagram.com/badvibesph/" target="_blank" class="btn ig">
+        <a href="https://www.instagram.com/badvibesph/" target="_blank" class="cyber-btn ig">
           <i class="fa-brands fa-instagram"></i> <span>Instagram</span>
         </a>
-        <a href="https://twitter.com/itsbadvibesph/" target="_blank" class="btn tw">
-          <i class="fa-brands fa-x-twitter"></i> <span>Twitter</span>
+        <a href="https://twitter.com/itsbadvibesph/" target="_blank" class="cyber-btn tw">
+          <i class="fa-brands fa-x-twitter"></i> <span>Twitter / X</span>
         </a>
-        <a href="https://www.tiktok.com/@itsbadvibes/" target="_blank" class="btn tt">
+        <a href="https://www.tiktok.com/@itsbadvibes/" target="_blank" class="cyber-btn tt">
           <i class="fa-brands fa-tiktok"></i> <span>TikTok</span>
         </a>
       </div>
@@ -255,208 +251,183 @@
     </div>
   </main>
 
-  <div class="status-badge">
-    <div class="dot"></div>
-    <span>Online</span>
+  <div class="stats-container">
+      <div class="orb-icon"></div>
+      <span>Energy Collected: <span id="score">0</span></span>
   </div>
 
   <script>
-    // --- 3D Tilt Init ---
-    VanillaTilt.init(document.querySelector(".glass-card"), {
-      speed: 400,
-      gyroscope: true
+    /* --- UI Interactions --- */
+    // 1. Initialize Tilt
+    VanillaTilt.init(document.querySelector(".cyber-card"));
+
+    // 2. Mouse Spotlight Tracker
+    document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth) * 100;
+        const y = (e.clientY / window.innerHeight) * 100;
+        document.body.style.setProperty('--mouse-x', `${x}%`);
+        document.body.style.setProperty('--mouse-y', `${y}%`);
     });
 
-    // --- GAME ENGINE ---
+    /* --- GAME ENGINE (Snakes & Food) --- */
     const canvas = document.getElementById('game-canvas');
     const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
     
-    let width, height;
-    let mouseX = -1000;
-    let mouseY = -1000;
-    let isBoosting = false;
+    let width, height, mouseX = -1000, mouseY = -1000, isBoosting = false;
+    let totalFoodEaten = 0;
 
-    // Slither.io Colors
-    const colors = [
-      '#00f2ea', // Cyan
-      '#ff0050', // Neon Red
-      '#adff02', // Lime
-      '#bd00ff', // Purple
-      '#ffae00'  // Orange
-    ];
+    // Game Settings
+    const SNAKE_COUNT = 6;
+    const FOOD_COUNT = 20;
+    const COLORS = ['#00f2ea', '#ff0050', '#adff02', '#bd00ff', '#ffae00', '#ffffff'];
 
-    // Resize Handler
+    // Resize
     function resize() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', resize);
-    resize();
+    window.addEventListener('resize', resize); resize();
 
-    // Interaction Listeners
-    window.addEventListener('mousemove', e => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
+    // Input Handlers
+    window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
     window.addEventListener('mousedown', () => isBoosting = true);
     window.addEventListener('mouseup', () => isBoosting = false);
     window.addEventListener('touchstart', () => isBoosting = true);
     window.addEventListener('touchend', () => isBoosting = false);
 
+
+    // --- FOOD CLASS ---
+    class Food {
+        constructor() { this.respawn(); }
+        respawn() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.size = 3 + Math.random() * 3;
+            this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            // Random pulse animation phase
+            this.pulse = Math.random() * Math.PI; 
+        }
+        draw() {
+            this.pulse += 0.05;
+            const currentSize = this.size + Math.sin(this.pulse) * 1;
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = this.color;
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, currentSize, 0, Math.PI*2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+    }
+
     // --- SNAKE CLASS ---
     class Snake {
       constructor() {
         this.reset();
-        // Scatter start positions
-        this.segments.forEach(s => {
-            s.x = Math.random() * width;
-            s.y = Math.random() * height;
-        });
+        this.segments.forEach(s => { s.x = Math.random() * width; s.y = Math.random() * height; });
       }
 
       reset() {
-        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
         this.angle = Math.random() * Math.PI * 2;
         this.targetAngle = this.angle;
-        this.baseSpeed = 2 + Math.random();
-        this.turnSpeed = 0.05;
-        this.radius = 6 + Math.random() * 4;
-        this.length = 30 + Math.floor(Math.random() * 40);
+        this.baseSpeed = 2 + Math.random() * 1.5;
+        this.turnSpeed = 0.06;
+        this.radius = 5 + Math.random() * 3;
+        this.targetLength = 40 + Math.floor(Math.random() * 30); // Target length to grow towards
         this.segments = [];
-        for(let i=0; i<this.length; i++) {
-          this.segments.push({x:0, y:0});
-        }
+        for(let i=0; i<this.targetLength; i++) { this.segments.push({x:0, y:0}); }
       }
 
-      update() {
-        // AI: Wander randomly
-        this.targetAngle += (Math.random() - 0.5) * 0.5;
+      grow() {
+          this.targetLength += 15; // Increase length when food eaten
+      }
 
-        // AI: Avoid Mouse
+      update(foodArray) {
+        // AI: Wander & Avoid Mouse (Same as before)
+        this.targetAngle += (Math.random() - 0.5) * 0.4;
         const head = this.segments[0];
-        const dx = head.x - mouseX;
-        const dy = head.y - mouseY;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        
-        if(dist < 200) {
-          // Calculate angle away from mouse
-          const angleAway = Math.atan2(dy, dx);
-          // Gently steer towards that angle
-          this.targetAngle = angleAway;
-        }
+        const dxM = head.x - mouseX; const dyM = head.y - mouseY;
+        if(Math.sqrt(dxM*dxM + dyM*dyM) < 250) { this.targetAngle = Math.atan2(dyM, dxM); }
 
-        // Smooth rotation
-        // Minimal logic to handle angle wrapping (0 to 2PI)
+        // Smooth Rotation
         let diff = this.targetAngle - this.angle;
         while (diff < -Math.PI) diff += Math.PI * 2;
         while (diff > Math.PI) diff -= Math.PI * 2;
         this.angle += diff * this.turnSpeed;
 
         // Move
-        const speed = isBoosting ? this.baseSpeed * 2.5 : this.baseSpeed;
-        const vx = Math.cos(this.angle) * speed;
-        const vy = Math.sin(this.angle) * speed;
+        const speed = isBoosting ? this.baseSpeed * 2.2 : this.baseSpeed;
+        let nextX = head.x + Math.cos(this.angle) * speed;
+        let nextY = head.y + Math.sin(this.angle) * speed;
 
-        let nextX = head.x + vx;
-        let nextY = head.y + vy;
+        // Wrap Screen
+        if (nextX < 0) nextX = width; if (nextX > width) nextX = 0;
+        if (nextY < 0) nextY = height; if (nextY > height) nextY = 0;
 
-        // Wrap Screen (Pacman style)
-        if (nextX < 0) nextX = width;
-        if (nextX > width) nextX = 0;
-        if (nextY < 0) nextY = height;
-        if (nextY > height) nextY = 0;
-
-        // Update Segments
+        // Add new head position
         this.segments.unshift({x: nextX, y: nextY});
-        if (this.segments.length > this.length) {
+
+        // --- FOOD COLLISION Check ---
+        for(let i = 0; i < foodArray.length; i++) {
+            const f = foodArray[i];
+            const dxF = head.x - f.x;
+            const dyF = head.y - f.y;
+            const dist = Math.sqrt(dxF*dxF + dyF*dyF);
+            // Check if head is close enough to eat food
+            if(dist < this.radius + f.size + 5) {
+                f.respawn(); // Move food elsewhere
+                this.grow(); // Increase snake target length
+                totalFoodEaten++;
+                scoreEl.innerText = totalFoodEaten;
+                // Optional: Small visual burst effect could go here
+            }
+        }
+
+        // Manage Length (Growth mechanic)
+        // Only remove tail segment if we are longer than our target length
+        if (this.segments.length > this.targetLength) {
           this.segments.pop();
         }
       }
 
       draw() {
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        ctx.lineWidth = this.radius * 2;
-        
-        // Shadow/Glow
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = this.color;
-        ctx.strokeStyle = this.color;
-
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = this.radius * 2;
+        ctx.shadowBlur = 20; ctx.shadowColor = this.color; ctx.strokeStyle = this.color;
         ctx.beginPath();
-        
-        // Start at head
-        if(this.segments.length > 0) {
-            ctx.moveTo(this.segments[0].x, this.segments[0].y);
-        }
-
-        // Draw body
+        if(this.segments.length > 0) ctx.moveTo(this.segments[0].x, this.segments[0].y);
         for (let i = 1; i < this.segments.length; i++) {
-          const curr = this.segments[i];
-          const prev = this.segments[i-1];
-
-          // STRETCH FIX:
-          // If distance between points is too large, it means we wrapped screen.
-          // Don't draw a line there. Start a new path.
-          const dist = Math.abs(curr.x - prev.x) + Math.abs(curr.y - prev.y);
-          
-          if (dist > 100) {
-            ctx.stroke(); // Draw what we have so far
-            ctx.beginPath(); // Start new line
-            ctx.moveTo(curr.x, curr.y);
-          } else {
-            // Smooth curve
-            // Using straight lines for segment connectors is faster and looks fine for snakes
-            ctx.lineTo(curr.x, curr.y);
-          }
+          const curr = this.segments[i]; const prev = this.segments[i-1];
+          // Stretch Fix for screen wrapping
+          if (Math.abs(curr.x - prev.x) + Math.abs(curr.y - prev.y) > 100) {
+            ctx.stroke(); ctx.beginPath(); ctx.moveTo(curr.x, curr.y);
+          } else { ctx.lineTo(curr.x, curr.y); }
         }
         ctx.stroke();
-
-        // Reset shadow for performance
         ctx.shadowBlur = 0;
-
-        // Eyes (Cute factor)
-        const head = this.segments[0];
-        ctx.fillStyle = 'white';
-        ctx.beginPath();
-        // Left Eye
-        ctx.arc(
-          head.x + Math.cos(this.angle - 0.8) * (this.radius*0.6), 
-          head.y + Math.sin(this.angle - 0.8) * (this.radius*0.6), 
-          this.radius * 0.4, 0, Math.PI*2
-        );
-        // Right Eye
-        ctx.arc(
-          head.x + Math.cos(this.angle + 0.8) * (this.radius*0.6), 
-          head.y + Math.sin(this.angle + 0.8) * (this.radius*0.6), 
-          this.radius * 0.4, 0, Math.PI*2
-        );
+        // Eyes
+        const head = this.segments[0]; ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.beginPath();
+        ctx.arc(head.x + Math.cos(this.angle-0.7)*this.radius*0.7, head.y + Math.sin(this.angle-0.7)*this.radius*0.7, this.radius*0.3, 0, Math.PI*2);
+        ctx.arc(head.x + Math.cos(this.angle+0.7)*this.radius*0.7, head.y + Math.sin(this.angle+0.7)*this.radius*0.7, this.radius*0.3, 0, Math.PI*2);
         ctx.fill();
       }
     }
 
-    // --- INIT ---
-    const snakes = [];
-    const SNAKE_COUNT = 8; // Multiple snakes
-
-    for(let i=0; i<SNAKE_COUNT; i++) {
-      snakes.push(new Snake());
-    }
+    // --- INIT GAME ---
+    const snakes = Array.from({length: SNAKE_COUNT}, () => new Snake());
+    const foods = Array.from({length: FOOD_COUNT}, () => new Food());
 
     // --- ANIMATION LOOP ---
     function animate() {
-      // Clear with slight fade for trail effect? No, clean clear looks more modern for this style.
       ctx.clearRect(0, 0, width, height);
-
-      snakes.forEach(snake => {
-        snake.update();
-        snake.draw();
-      });
-
+      // Draw food first so snakes go over them
+      foods.forEach(f => f.draw());
+      // Update and draw snakes, passing food array for collision checks
+      snakes.forEach(s => { s.update(foods); s.draw(); });
       requestAnimationFrame(animate);
     }
     animate();
-
   </script>
 </body>
 </html>

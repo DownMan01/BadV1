@@ -5,21 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Bad Vibes Socials</title>
+  <meta name="theme-color" content="#0f0f0f">
 
   <meta name="description" content="Connect with Bad Vibes across all social platforms.">
-  <meta property="og:image" content="/img/profile.png">
-  <meta property="og:type" content="website">
+  <meta property="og:image" content="./img/profile.png">
   <link rel="icon" type="image/x-icon" href="./img/icon.png">
-  <meta name="theme-color" content="#0f0f0f">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6639387700552171" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.0.6/tsparticles.slim.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6639387700552171" crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6RPDDNFTXY"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -31,20 +32,21 @@
   <style>
     /* --- CSS Variables & Reset --- */
     :root {
-      --bg-color: #0f0f0f;
+      --bg-color: #0a0a0a; /* Slightly darker for contrast */
       --text-color: #ffffff;
-      --text-secondary: rgba(255, 255, 255, 0.7);
-      --card-bg: rgba(255, 255, 255, 0.08);
-      --card-border: rgba(255, 255, 255, 0.15);
-      --btn-bg: rgba(255, 255, 255, 0.12);
-      --btn-hover: rgba(255, 255, 255, 0.25);
-      --accent-glow: rgba(255, 255, 255, 0.4);
-      /* Brand Colors for hovers */
-      --fb-color: #1877F2;
-      --yt-color: #FF0000;
-      --ig-color: #E1306C;
-      --x-color: #ffffff;
-      --tt-color: #00f2ea;
+      --text-secondary: rgba(255, 255, 255, 0.75);
+      /* More aggressive glassmorphism settings */
+      --card-bg: rgba(40, 40, 40, 0.3);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --btn-bg: rgba(255, 255, 255, 0.07);
+      --accent-glow: rgba(255, 255, 255, 0.5);
+      
+      /* Brand Colors */
+      --fb: #1877F2;
+      --yt: #FF0000;
+      --ig: #E1306C;
+      --x: #ffffff;
+      --tt: #00f2ea;
     }
 
     * {
@@ -59,118 +61,127 @@
       background-color: var(--bg-color);
       color: var(--text-color);
       min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
+      overflow-x: hidden; /* Prevent horizontal scroll from animations */
       display: flex;
       justify-content: center;
       align-items: center;
+      /* Subtle breathing gradient background fallback */
+      background: linear-gradient(45deg, #0a0a0a, #1a1a1a, #0f0514);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
     }
 
-    /* --- Floating SVG Background Layer --- */
-    .bg-shapes {
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Particles container */
+    #tsparticles {
       position: fixed;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1;
-      overflow: hidden;
+      z-index: 0;
+      pointer-events: none; /* Allows clicking through to the content */
     }
-
-    .shape {
-      position: absolute;
-      filter: blur(100px);
-      opacity: 0.5;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
-      animation-direction: alternate;
-    }
-
-    .shape-1 {
-      top: -10%;
-      left: -10%;
-      width: 500px;
-      height: 500px;
-      background: #4a1a63; /* Deep purple blob */
-      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-      animation: float1 25s infinite;
-    }
-
-    .shape-2 {
-      bottom: -20%;
-      right: -10%;
-      width: 600px;
-      height: 600px;
-      background: #1a3f63; /* Deep blue blob */
-      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-      animation: float2 30s infinite;
-    }
-
-    @keyframes float1 {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      100% { transform: translate(100px, 50px) rotate(45deg); }
-    }
-    
-    @keyframes float2 {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      100% { transform: translate(-100px, -80px) rotate(-30deg); }
-    }
-
 
     /* --- Main Layout --- */
     main {
+      position: relative;
+      z-index: 10;
       width: 100%;
-      padding: 2rem 1.5rem;
+      padding: 2rem 1rem;
       display: flex;
       justify-content: center;
-      opacity: 0;
-      animation: fadeIn 0.8s ease-out forwards;
     }
 
-    /* --- The Glass Card --- */
+    /* --- Glass Card --- */
     .link-card {
       width: 100%;
-      max-width: 460px; /* Optimal width for mobile/tablet */
+      max-width: 450px;
+      /* Advanced Glassmorphism */
       background: var(--card-bg);
-      backdrop-filter: blur(16px) saturate(150%);
-      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
       border: 1px solid var(--card-border);
-      border-radius: 28px;
+      border-radius: 30px;
       padding: 3rem 2rem;
       text-align: center;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      /* Initial state for animation */
+      opacity: 0;
+      transform: translateY(30px);
+      animation: cardEntrance 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
+    @keyframes cardEntrance {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Utility Bar (Share Button) */
+    .utility-bar {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+    }
+    .share-btn {
+        background: rgba(255,255,255,0.1);
+        border: none;
+        color: var(--text-secondary);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .share-btn:hover { background: rgba(255,255,255,0.2); color: white; transform: rotate(15deg); }
+
+
     /* --- Profile Section --- */
-    header {
-      margin-bottom: 2.5rem;
+    header { margin-bottom: 2.5rem; }
+
+    .profile-wrapper {
+        /* Wrapper needed for 3D tilt effect */
+        display: inline-block;
+        padding: 5px;
+        background: linear-gradient(45deg, var(--fb), var(--ig), var(--yt));
+        border-radius: 50%;
+        margin-bottom: 1rem;
+        /* Tilt settings handled by JS, but needs perspective here */
+        transform-style: preserve-3d;
+        transform: perspective(1000px);
+        box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
     }
 
     .profile-img {
-      width: 110px;
-      height: 110px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid var(--card-border);
-      margin-bottom: 1rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
-    }
-    
-    .profile-img:hover {
-        transform: scale(1.03);
-        border-color: var(--text-color);
+      border: 4px solid #1a1a1a; /* Dark border between gradient and image */
+      display: block;
+      transform: translateZ(20px); /* Pushes image forward in 3D space */
     }
 
-    h1 {
-      font-size: 1.6rem;
+    /* Animated Gradient Text */
+    h1.username {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.8rem;
       font-weight: 700;
-      letter-spacing: -0.5px;
       margin-bottom: 0.5rem;
+      background: linear-gradient(to right, #ffffff, #a1a1a1, #ffffff);
+      background-size: 200% auto;
+      
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textShine 5s linear infinite;
     }
+    @keyframes textShine { to { background-position: 200% center; } }
 
     .bio {
-      font-size: 1rem;
+      font-size: 1.05rem;
       color: var(--text-secondary);
       font-weight: 500;
     }
@@ -179,137 +190,290 @@
     .link-list {
       display: flex;
       flex-direction: column;
-      gap: 1.1rem; /* Increased spacing between buttons */
+      gap: 1rem;
       width: 100%;
+      perspective: 1000px; /* For 3D button effects */
     }
 
     .link-btn {
       position: relative;
       display: flex;
       align-items: center;
-      /* Keeps icon left, text center */
-      justify-content: center; 
-      padding: 1.1rem 1.5rem;
+      justify-content: center;
+      padding: 1.2rem 1.5rem;
       background: var(--btn-bg);
       border: 1px solid var(--card-border);
-      border-radius: 50px; /* Pill shape */
+      border-radius: 16px; /* Modern squircle */
       color: var(--text-color);
       text-decoration: none;
       font-weight: 600;
-      font-size: 1.05rem;
-      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+      font-size: 1.1rem;
+      /* Important for magnetic effect */
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease, background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
       overflow: hidden;
+      
+      /* Entrance animation setup */
+      opacity: 0;
+      animation: itemPopUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    
+    /* Staggered animation delays */
+    .link-btn:nth-child(1) { animation-delay: 0.2s; }
+    .link-btn:nth-child(2) { animation-delay: 0.3s; }
+    .link-btn:nth-child(3) { animation-delay: 0.4s; }
+    .link-btn:nth-child(4) { animation-delay: 0.5s; }
+    .link-btn:nth-child(5) { animation-delay: 0.6s; }
+
+    @keyframes itemPopUp {
+        from { opacity: 0; transform: translateY(20px) scale(0.9); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Icon positioning */
+    /* Icon positioning & Z-index for 3D */
     .link-btn i {
       position: absolute;
       left: 24px;
-      font-size: 1.3rem;
-      transition: transform 0.2s ease;
-    }
-
-    /* Hover effects */
-    .link-btn:hover {
-      background: var(--btn-hover);
-      transform: translateY(-3px) scale(1.01);
-      box-shadow: 0 10px 20px -10px rgba(0,0,0,0.3);
-      border-color: var(--accent-glow);
+      font-size: 1.4rem;
+      transition: all 0.3s ease;
+      transform: translateZ(10px); /* Pushes icon slightly forward */
     }
     
-    .link-btn:active {
-        transform: translateY(-1px) scale(0.99);
+    .link-btn span {
+        transform: translateZ(5px); /* Pushes text slightly forward */
     }
 
-    /* Brand color highlights on hover */
-    .fb:hover { color: var(--fb-color); border-color: var(--fb-color); box-shadow: 0 8px 20px -10px var(--fb-color);}
-    .yt:hover { color: var(--yt-color); border-color: var(--yt-color); box-shadow: 0 8px 20px -10px var(--yt-color);}
-    .ig:hover { color: var(--ig-color); border-color: var(--ig-color); box-shadow: 0 8px 20px -10px var(--ig-color);}
-    .tw:hover { color: var(--x-color); border-color: var(--x-color); box-shadow: 0 8px 20px -10px rgba(255,255,255,0.5);}
-    .tt:hover { color: var(--tt-color); border-color: var(--tt-color); box-shadow: 0 8px 20px -10px var(--tt-color);}
+    /* Hover States (Used if JS magnetic tilt fails or on mobile) */
+    .link-btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: var(--accent-glow);
+      box-shadow: 0 10px 30px -15px rgba(255,255,255,0.3);
+    }
+    .link-btn:hover i { transform: translateZ(15px) scale(1.1); }
+
+    /* Brand Specific Hovers/Glows */
+    .fb:hover { --accent-glow: var(--fb); }
+    .yt:hover { --accent-glow: var(--yt); }
+    .ig:hover { --accent-glow: var(--ig); }
+    .tw:hover { --accent-glow: var(--x); }
+    .tt:hover { --accent-glow: var(--tt); }
 
 
     /* --- Footer --- */
     footer {
-      margin-top: 3.5rem;
-      font-size: 0.8rem;
+      margin-top: 3rem;
+      font-size: 0.85rem;
       color: var(--text-secondary);
+      opacity: 0;
+      animation: fadeIn 1s ease 0.8s forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; }}
+
+    /* --- Toast Notification --- */
+    #toast {
+        visibility: hidden;
+        min-width: 250px; 
+        margin-left: -125px; 
+        background-color: #333; 
+        color: #fff; 
+        text-align: center; 
+        border-radius: 50px; 
+        padding: 16px; 
+        position: fixed; 
+        z-index: 100; 
+        left: 50%; 
+        bottom: 30px; 
+        font-size: 14px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
 
-    /* --- Animations --- */
-    @keyframes fadeIn {
-      to { opacity: 1; }
+    #toast.show {
+        visibility: visible;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @keyframes fadein {
+        from {bottom: 0; opacity: 0;}
+        to {bottom: 30px; opacity: 1;}
+    }
+
+    @keyframes fadeout {
+        from {bottom: 30px; opacity: 1;}
+        to {bottom: 0; opacity: 0;}
     }
 
     /* --- Mobile Adjustments --- */
     @media (max-width: 480px) {
-      .link-card {
-        padding: 2.5rem 1.5rem;
-        border-radius: 24px;
-      }
-      .profile-img {
-        width: 100px;
-        height: 100px;
-      }
-      .link-btn {
-        padding: 1rem 1.2rem;
-        font-size: 1rem;
-      }
-      .link-btn i {
-          left: 20px;
-          font-size: 1.2rem;
-      }
+      .link-card { padding: 2.5rem 1.5rem; border-radius: 24px;}
+      .profile-img { width: 100px; height: 100px; }
+      .link-btn { padding: 1.1rem 1.2rem; font-size: 1rem; }
+      .link-btn i { left: 20px; font-size: 1.2rem; }
+      h1.username { font-size: 1.5rem; }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="bg-shapes" aria-hidden="true">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-  </div>
+  <div id="tsparticles"></div>
 
   <main>
     <div class="link-card">
+      
+      <div class="utility-bar">
+          <button class="share-btn" onclick="copyLink()" aria-label="Share Link">
+              <i class="fa-solid fa-share-nodes"></i>
+          </button>
+      </div>
+
       <header>
-        <img src="./img/profile.png" alt="Bad Vibes" class="profile-img">
-        <h1>Bad Vibes</h1>
-        <p class="bio">Socials & Content</p>
+        <div class="profile-wrapper" data-tilt data-tilt-glare data-tilt-max-glare="0.3" data-tilt-scale="1.05">
+            <img src="./img/profile.png" alt="Bad Vibes" class="profile-img">
+        </div>
+        <h1 class="username">Bad Vibes</h1>
+        <p class="bio">Digital Creator & Socials</p>
       </header>
 
       <div class="link-list">
-        <a target="_blank" href="https://www.facebook.com/badvibesph/" class="link-btn fb">
+        
+        <a target="_blank" href="https://www.facebook.com/badvibeph/" class="link-btn fb magnetic-btn">
           <i class="fa-brands fa-facebook-f"></i>
-          Facebook
+          <span>Facebook</span>
         </a>
 
-        <a target="_blank" href="https://www.youtube.com/badvibesph/" class="link-btn yt">
+        <a target="_blank" href="https://www.youtube.com/badvibesph/" class="link-btn yt magnetic-btn">
           <i class="fa-brands fa-youtube"></i>
-          YouTube
+          <span>YouTube</span>
         </a>
 
-        <a target="_blank" href="https://www.instagram.com/badvibesph/" class="link-btn ig">
+        <a target="_blank" href="https://www.instagram.com/badvibesph/" class="link-btn ig magnetic-btn">
           <i class="fa-brands fa-instagram"></i>
-          Instagram
+          <span>Instagram</span>
         </a>
 
-        <a target="_blank" href="https://twitter.com/itsbadvibesph/" class="link-btn tw">
-          <i class="fa-brands fa-twitter"></i>
-          Twitter/X
+        <a target="_blank" href="https://twitter.com/itsbadvibesph/" class="link-btn tw magnetic-btn">
+          <i class="fa-brands fa-x-twitter"></i>
+          <span>Twitter/X</span>
         </a>
 
-        <a target="_blank" href="https://www.tiktok.com/@itsbadvibes/" class="link-btn tt">
+        <a target="_blank" href="https://www.tiktok.com/@itsbadvibes/" class="link-btn tt magnetic-btn">
           <i class="fa-brands fa-tiktok"></i>
-          TikTok
+          <span>TikTok</span>
         </a>
 
       </div>
 
       <footer>
-        <p>&copy; 2024 Bad Vibes. All rights reserved.</p>
+        <p>&#169; 2024 Bad Vibes. All rights reserved.</p>
       </footer>
     </div>
   </main>
+
+  <div id="toast">Link copied to clipboard!</div>
+
+
+  <script>
+    // --- 1. Initialize tsParticles (The Background) ---
+    tsParticles.load('tsparticles', {
+      particles: {
+        number: {
+          value: 60, // Adjust density
+          density: { enable: true, value_area: 800 }
+        },
+        color: { value: ["#ffffff", "#1877F2", "#E1306C"] }, // Particle colors based on brands
+        shape: { type: "circle" },
+        opacity: {
+          value: 0.3,
+          random: true,
+          anim: { enable: true, speed: 0.5, opacity_min: 0.1, sync: false }
+        },
+        size: {
+          value: 3,
+          random: true,
+          anim: { enable: true, speed: 2, size_min: 0.1, sync: false }
+        },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#ffffff",
+          opacity: 0.15,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 0.8, /* Slow movement */
+          direction: "none",
+          random: false,
+          straight: false,
+          out_mode: "out",
+          bounce: false,
+          attract: { enable: false, rotateX: 600, rotateY: 1200 }
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" }, /* Connects lines on hover */
+          onclick: { enable: true, mode: "push" },
+          resize: true
+        },
+        modes: {
+          grab: { distance: 180, line_linked: { opacity: 0.4 } },
+          push: { particles_nb: 4 }
+        }
+      },
+      retina_detect: true
+    });
+
+
+    // --- 2. Vanilla Tilt Initialization ---
+    // Auto-init is handled by data-tilt attributes in the HTML, 
+    // but we can configure defaults here if needed.
+    VanillaTilt.init(document.querySelectorAll(".profile-wrapper"), {
+		max: 15,
+		speed: 400
+	});
+
+
+    // --- 3. Magnetic Button Effect (Custom JS) ---
+    const magneticBtns = document.querySelectorAll('.magnetic-btn');
+
+    magneticBtns.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const position = btn.getBoundingClientRect();
+            // Calculate mouse position relative to the button center
+            const x = e.pageX - position.left - position.width / 2;
+            const y = e.pageY - position.top - position.height / 2;
+            
+            // Move the button and its children (for 3D depth)
+            // Dividing by numbers (e.g., 5, 10) controls the intensity of the movement
+            btn.style.transform = `translate(${x * 0.2}px, ${y * 0.3}px) rotateX(${-y/10}deg) rotateY(${x/10}deg)`;
+            btn.querySelector('i').style.transform = `translateZ(20px) translate(${x * 0.1}px, ${y * 0.1}px)`;
+            btn.querySelector('span').style.transform = `translateZ(10px) translate(${x * 0.05}px, ${y * 0.05}px)`;
+        });
+
+        // Reset position on mouse leave
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translate(0px, 0px) rotateX(0deg) rotateY(0deg)';
+            btn.querySelector('i').style.transform = 'translateZ(10px) translate(0px, 0px)';
+            btn.querySelector('span').style.transform = 'translateZ(5px) translate(0px, 0px)';
+        });
+    });
+
+
+    // --- 4. Share / Copy Link Functionality ---
+    function copyLink() {
+        // Copy current URL to clipboard
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            // Show Toast
+            var toast = document.getElementById("toast");
+            toast.className = "show";
+            // After 3 seconds, remove the show class from DIV
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    }
+  </script>
 </body>
 </html>
